@@ -21,13 +21,12 @@ public class Main
     public static void main(String[] args)
     {
         Connection conn = null;
-        String url = "jdbc:mysql://cslvm74.csc.calpoly.edu/students";
+        String url = "jdbc:mysql://cslvm74.csc.calpoly.edu/";
         String user = "mpbryan";
         String password = "JP3E2Ca9";
         String statement = "select * from list";
         try
         {
-            Class.forName("com.mysql.jdbc.Driver");
             conn = DriverManager.getConnection(url, user, password);
         }
         catch (Exception ex)
