@@ -224,7 +224,6 @@ where FirstDay.Ticker = LastDay.Ticker
 order by RelativePrice desc
 limit 5) as Y7;
 
-
 -- Q4 - Select 10 stocks to watch in 2017 based on stock market performance
 -- in 2016. Get top 10 highest average closes of distinct stocks in 2016.
 select Averages.Name, Averages.Ticker, Averages.Avg
@@ -236,5 +235,30 @@ group by AP.Ticker) Averages
 order by Averages.Avg desc
 limit 10;
 
--- Q5 - 
+-- Q5 - Provide general assessment of performance of different sectors of
+-- stock market (11 sectors total), you can ignore Telecommunications
+-- Services) in 2016. Tanking (negative), Average (0-0.1), Above Average (0.1-0.2), Significantly Outperforming (> 0.2)
+select Percentages.Sector, CASE WHEN Percentages.Percentage < 0.0 THEN 'Tanking'
+WHEN Percentages.Percentage >= 0.0 and Percentages.Percentage < 0.1 THEN 'Average'
+WHEN Percentages.Percentage >= 0.1 and Percentages.Percentage < 0.2 THEN 'Above Average'
+ELSE  'Significantly Outperforming' END AS Performance
+from (select LastAvgs.Sector, (LastAvgs.AvgLastDayClose - FirstAvgs.AvgFirstDayClose) / FirstAvgs.AvgFirstDayClose as Percentage
+from (select S.Sector, AVG(AP.Close) as AvgFirstDayClose
+from AdjustedPrices AP, Securities S
+where AP.Ticker = S.Ticker
+and AP.Day = (select MIN(AP.Day) as FirstDay
+from AdjustedPrices AP
+where YEAR(AP.Day) = 2016)
+and S.Sector <> 'Telecommunications Services'
+group by S.Sector) FirstAvgs,
+(select S.Sector, AVG(AP.Close) as AvgLastDayClose
+from AdjustedPrices AP, Securities S
+where AP.Ticker = S.Ticker
+and AP.Day = (select MAX(AP.Day) as LastDay
+from AdjustedPrices AP
+where YEAR(AP.Day) = 2016)
+and S.Sector <> 'Telecommunications Services'
+group by S.Sector) LastAvgs
+where FirstAvgs.Sector = LastAvgs.Sector) Percentages;
+
 
