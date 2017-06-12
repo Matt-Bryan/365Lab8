@@ -55,9 +55,23 @@ limit 10;
 -- Q3 - For each year, report the top 5 highest performing stocks in terms
 -- of the absolute price increase and top 5 higheest performing stocks in
 -- terms of relative price increase.
-
-
-
+select LastDays.Day, LastDays.Ticker, (LastDays.Close - FirstDays.Open) as AbsolutePrice
+from (select AP.Day, AP.Ticker, AP.Open
+from AdjustedPrices AP
+group by YEAR(AP.Day), AP.Ticker
+) FirstDays,
+(select AP.Day, AP.Ticker, AP.Close
+from (select AP.Ticker, MAX(AP.Day) as MaxDate
+from AdjustedPrices AP
+group by YEAR(AP.Day), AP.Ticker
+) Maxes, AdjustedPrices AP
+where Maxes.MaxDate = AP.Day
+and AP.Ticker = Maxes.Ticker
+) LastDays
+where FirstDays.Ticker = LastDays.Ticker
+and YEAR(FirstDays.Day) = YEAR(LastDays.Day)
+group by YEAR(LastDays.Day), LastDays.Ticker
+order by YEAR(LastDays.Day), AbsolutePrice desc;
 
 
 -- Q4 - Select 10 stocks to watch in 2017 based on stock market performance
