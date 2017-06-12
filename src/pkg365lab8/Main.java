@@ -1,37 +1,41 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package pkg365lab8;
+package lab08;
 
 import java.sql.*;
+public class Driver {
 
+	public static void main(String[] args) {
+		try {
+			Class.forName("com.mysql.jdbc.Driver");
+		}
+		catch (ClassNotFoundException e) {
+			System.out.println("Driver not found");
+		}
+		
+		Connection conn = null;
+		String url = "jdbc:mysql://cslvm74.csc.calpoly.edu/nyse";
+		String user = "avsharma";
+		String password = "So1ra1kh6";
+		try {
+			conn = DriverManager.getConnection(url, user, password);
+		}
+		catch (Exception e) {
+			System.out.println("Could not open connection");
+		}
+		
+		try {
+			Statement s = conn.createStatement();
+		
 
-/**
- *
- * @author Matthew
- */
-public class Main
-{
+			ResultSet result = s.executeQuery("select * from Securities where Ticker = 'FSLR' OR Ticker = 'XOM'");
+			
+				
+			while (result.next()) {
+				System.out.println(result.getString("Ticker") + ", " + result.getString("Name"));
+			}
+		}
+		catch (SQLException e) {
+			System.out.println("Uh oh");
+		}
+	}
 
-    /**
-     * @param args the command line arguments
-     */
-    public static void main(String[] args)
-    {
-        Connection conn = null;
-        String url = "jdbc:mysql://cslvm74.csc.calpoly.edu/";
-        String user = "mpbryan";
-        String password = "JP3E2Ca9";
-        String statement = "select * from list";
-        try
-        {
-            conn = DriverManager.getConnection(url, user, password);
-        }
-        catch (Exception ex)
-        {
-            System.out.println("Could not open connection");
-        }
-    }
 }
