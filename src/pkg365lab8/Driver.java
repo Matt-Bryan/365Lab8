@@ -1328,8 +1328,8 @@ public class Driver {
         try {
             Statement s = conn.createStatement();
 
-            ResultSet result = s.executeQuery("select FSLR.Year, FSLR.AvgVolume" + args[0] + ", AMZN.AvgVolumeAMZN, FSLR.AvgVolumeFSLR - AMZN.AvgVolumeAMZN as " + args[0] + "vsAMZNVolumes "
-            		+ "from (select YEAR(AP.Day) as Year, AVG(AP.Volume) as AvgVolumeFSLR "
+            ResultSet result = s.executeQuery("select FSLR.Year, FSLR.AvgVolume, AMZN.AvgVolumeAMZN, FSLR.AvgVolume - AMZN.AvgVolumeAMZN as " + args[0] + "vsAMZNVolumes "
+            		+ "from (select YEAR(AP.Day) as Year, AVG(AP.Volume) as AvgVolume "
             		+ "from AdjustedPrices AP "
             		+ "where AP.Ticker = '" + args[0] + "' "
             		+ "and YEAR(AP.Day) = 2016) FSLR, "
@@ -1341,13 +1341,13 @@ public class Driver {
             
             output.println("<table>");
             output.println("<tr>");
-            output.println("<th align='left'>Year, AvgVolume" + args[0] + ", AvgVolumeAMZN, " + args[0] + "vsAMZNVolumes</th>");
+            output.println("<th align='left'>Year, AvgVolume, AvgVolumeAMZN, " + args[0] + "vsAMZNVolumes</th>");
             output.println("</tr>");
             
             while (result.next()) {
                 output.println("<tr>");
                 output.print("<td>");
-                output.print(result.getString("Year") + ", " + result.getString("AvgVolume" + args[0]) + ", " + result.getString("AvgVolumeAMZN")
+                output.print(result.getString("Year") + ", " + result.getString("AvgVolume") + ", " + result.getString("AvgVolumeAMZN")
                 + ", " + result.getString(args[0] + "vsAMZNVolumes"));
                 output.println("</td>");
                 output.println("</tr>");
@@ -1427,8 +1427,8 @@ public class Driver {
         try {
             Statement s = conn.createStatement();
 
-            ResultSet result = s.executeQuery("select FSLR.Year, FSLR.AvgVolume" + args[0] + ", ISRG.AvgVolumeISRG, FSLR.AvgVolumeFSLR - ISRG.AvgVolumeISRG as " + args[0] + "vsISRGVolumes "
-            		+ "from (select YEAR(AP.Day) as Year, AVG(AP.Volume) as AvgVolumeFSLR "
+            ResultSet result = s.executeQuery("select FSLR.Year, FSLR.AvgVolume, ISRG.AvgVolumeISRG, FSLR.AvgVolume - ISRG.AvgVolumeISRG as " + args[0] + "vsISRGVolumes "
+            		+ "from (select YEAR(AP.Day) as Year, AVG(AP.Volume) as AvgVolume "
             		+ "from AdjustedPrices AP "
             		+ "where AP.Ticker = '" + args[0] + "' "
             		+ "and YEAR(AP.Day) = 2016) FSLR, "
@@ -1440,13 +1440,13 @@ public class Driver {
             
             output.println("<table>");
             output.println("<tr>");
-            output.println("<th align='left'>Year, AvgVolume" + args[0] + ", AvgVolumeISRG, " + args[0] + "vsISRGVolumes</th>");
+            output.println("<th align='left'>Year, AvgVolume, AvgVolumeISRG, " + args[0] + "vsISRGVolumes</th>");
             output.println("</tr>");
             
             while (result.next()) {
                 output.println("<tr>");
                 output.print("<td>");
-                output.print(result.getString("Year") + ", " + result.getString("AvgVolume" + args[0]) + ", " + result.getString("AvgVolumeISRG")
+                output.print(result.getString("Year") + ", " + result.getString("AvgVolume") + ", " + result.getString("AvgVolumeISRG")
                 + ", " + result.getString(args[0] + "vsISRGVolumes"));
                 output.println("</td>");
                 output.println("</tr>");
@@ -1526,8 +1526,8 @@ public class Driver {
         try {
             Statement s = conn.createStatement();
 
-            ResultSet result = s.executeQuery("select FSLR.Year, FSLR.AvgVolume" + args[0] + ", MLM.AvgVolumeMLM, FSLR.AvgVolumeFSLR - MLM.AvgVolumeMLM as " + args[0] + "vsMLMVolumes "
-            		+ "from (select YEAR(AP.Day) as Year, AVG(AP.Volume) as AvgVolumeFSLR "
+            ResultSet result = s.executeQuery("select FSLR.Year, FSLR.AvgVolume, MLM.AvgVolumeMLM, FSLR.AvgVolume - MLM.AvgVolumeMLM as " + args[0] + "vsMLMVolumes "
+            		+ "from (select YEAR(AP.Day) as Year, AVG(AP.Volume) as AvgVolume "
             		+ "from AdjustedPrices AP "
             		+ "where AP.Ticker = '" + args[0] + "' "
             		+ "and YEAR(AP.Day) = 2016) FSLR, "
@@ -1539,19 +1539,19 @@ public class Driver {
             
             output.println("<table>");
             output.println("<tr>");
-            output.println("<th align='left'>Year, AvgVolume" + args[0] + ", AvgVolumeMLM, " + args[0] + "vsMLMVolumes</th>");
+            output.println("<th align='left'>Year, AvgVolume, AvgVolumeMLM, " + args[0] + "vsMLMVolumes</th>");
             output.println("</tr>");
             
             while (result.next()) {
                 output.println("<tr>");
                 output.print("<td>");
-                output.print(result.getString("Year") + ", " + result.getString("AvgVolume" + args[0]) + ", " + result.getString("AvgVolumeMLM")
+                output.print(result.getString("Year") + ", " + result.getString("AvgVolume") + ", " + result.getString("AvgVolumeMLM")
                 + ", " + result.getString(args[0] + "vsMLMVolumes"));
                 output.println("</td>");
                 output.println("</tr>");
             }
 
-            output.println("</table>");
+            output.println("</table>"); 
             output.println("</br>");
         } catch (SQLException e) {
             e.printStackTrace();
