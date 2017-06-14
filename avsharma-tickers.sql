@@ -8,7 +8,7 @@
 select *
 from (select AP.Ticker, MIN(AP.Day) as FirstDay, MAX(AP.Day) as LastDay
 from AdjustedPrices AP
-where AP.Ticker = 'FSLR') Solar
+where AP.Ticker = 'FSLR') Solar;
 
 select *
 from (select AP.Ticker, MIN(AP.Day) as FirstDay, MAX(AP.Day) as LastDay
@@ -57,12 +57,12 @@ where EndCloses.Ticker = StartCloses.Ticker
 group by YEAR(EndCloses.Day);
 
 -- Volume of trading each year (FSLR and XOM)
-select YEAR(AP.Day) as Year, AP.Ticker, SUM(AP.Volume)
+select YEAR(AP.Day) as Year, AP.Ticker, SUM(AP.Volume) as Sum
 from AdjustedPrices AP
 where AP.Ticker = 'FSLR'
 group by YEAR(AP.Day);
 
-select YEAR(AP.Day) as Year, AP.Ticker, SUM(AP.Volume)
+select YEAR(AP.Day) as Year, AP.Ticker, SUM(AP.Volume) as Sum
 from AdjustedPrices AP
 where AP.Ticker = 'XOM'
 group by YEAR(AP.Day);

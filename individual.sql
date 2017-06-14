@@ -1,7 +1,7 @@
 -- Queries for individual securities
 
 -- Q3
-select MONTH(Day) as Month, AVG(Close) as AvgClose, MAX(High) as HighestPrice, MIN(Low) as LowestPrice, AVG(Volume) as AvgVolume
+select MONTHNAME(Day) as Month, ROUND(AVG(Close), 2) as AvgClose, MAX(High) as HighestPrice, MIN(Low) as LowestPrice, ROUND(AVG(Volume), 2) as AvgVolume
 from AdjustedPrices AP
 where YEAR(Day) = 2016
 and Ticker = 'CB'

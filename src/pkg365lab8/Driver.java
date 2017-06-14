@@ -534,6 +534,214 @@ public class Driver {
             System.out.println("Uh oh");
         }
         
+        // ----------------------------------------------------------------------------------------------------------------
+        
+        // First Individual Query
+        try {
+            Statement s = conn.createStatement();
+
+            ResultSet result = s.executeQuery("select * "
+            		+ "from (select AP.Ticker, MIN(AP.Day) as FirstDay, MAX(AP.Day) as LastDay "
+            		+ "from AdjustedPrices AP "
+            		+ "where AP.Ticker = '" + args[0] + "'" + ") Solar;");
+            
+            output.println("<p>");
+            output.println("<h2>Individual Stock Data #1</h2>");
+            output.println("Range of dates for which the pricing data is available.");
+            output.println("</p>");
+            
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>Ticker, FirstDay, LastDay</th>");
+            output.println("</tr>");
+            
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Ticker") + ", " + result.getString("FirstDay") + ", " + result.getString("LastDay"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+        } catch (SQLException e) {
+            System.out.println("Uh oh");
+        }
+        
+        // Second Individual Query Part 1
+        try {
+            Statement s = conn.createStatement();
+
+            ResultSet result = s.executeQuery("select YEAR(EndCloses.Day) as Year, EndCloses.Ticker, (EndCloses.Close - StartCloses.Close) as IncDecPrices "
+            		+ "from (select AP.Ticker, AP.Day, AP.Close "
+            		+ "from AdjustedPrices AP, "
+            		+ "(select AP.Ticker, MIN(AP.Day) as Min "
+            		+ "from AdjustedPrices AP "
+            		+ "where AP.Ticker = '" + args[0] + "' "
+            		+ "group by YEAR(AP.Day)) FirstDaysSolar "
+            		+ "where AP.Ticker = FirstDaysSolar.Ticker "
+            		+ "and AP.Day = FirstDaysSolar.Min) StartCloses, "
+            		+ "(select AP.Ticker, AP.Day, AP.Close "
+            		+ "from AdjustedPrices AP, "
+            		+ "(select AP.Ticker, MAX(AP.Day) as Max "
+            		+ "from AdjustedPrices AP "
+            		+ "where AP.Ticker = '" + args[0] + "' "
+            		+ "group by YEAR(AP.Day)) LastDaysSolar "
+            		+ "where AP.Ticker = LastDaysSolar.Ticker "
+            		+ "and AP.Day = LastDaysSolar.Max) EndCloses "
+            		+ "where EndCloses.Ticker = StartCloses.Ticker "
+            		+ "group by YEAR(EndCloses.Day);");
+            
+            output.println("<p>");
+            output.println("<h2>Individual Stock Data #2</h2>");
+            output.println("For each year, report the increase/decrease in prices year-over-year.");
+            output.println("</p>");
+            
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>Year, Ticker, IncDecPrices</th>");
+            output.println("</tr>");
+            
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Year") + ", " + result.getString("Ticker") + ", " + result.getString("IncDecPrices"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+        } catch (SQLException e) {
+            System.out.println("Uh oh");
+        }
+        
+        // Second Individual Query Part 2
+        try {
+            Statement s = conn.createStatement();
+
+            ResultSet result = s.executeQuery("select YEAR(AP.Day) as Year, AP.Ticker, SUM(AP.Volume) as Sum "
+            		+ "from AdjustedPrices AP "
+            		+ "where AP.Ticker = '" + args[0] + "' "
+            		+ "group by YEAR(AP.Day);");
+            
+            output.println("<p>");
+            output.println("For each year, report the volume of trading.");
+            output.println("</p>");
+            
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>Year, Ticker, Sum</th>");
+            output.println("</tr>");
+            
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Year") + ", " + result.getString("Ticker") + ", " + result.getString("Sum"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+        } catch (SQLException e) {
+            System.out.println("Uh oh");
+        }
+        
+        // Second Individual Query Part 3
+        try {
+            Statement s = conn.createStatement();
+
+            ResultSet result = s.executeQuery("select YEAR(AP.Day) as Year, AP.Ticker, ROUND(AVG(AP.Close), 2) as AvgClose "
+            		+ "from AdjustedPrices AP "
+            		+ "where AP.Ticker = '" + args[0] + "' "
+            		+ "group by YEAR(AP.Day);");
+            
+            output.println("<p>");
+            output.println("For each year, report the average closing price in a given year.");
+            output.println("</p>");
+            
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>Year, Ticker, AvgClose</th>");
+            output.println("</tr>");
+            
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Year") + ", " + result.getString("Ticker") + ", " + result.getString("AvgClose"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+        } catch (SQLException e) {
+            System.out.println("Uh oh");
+        }
+        
+        // Second Individual Query Part 4
+        try {
+            Statement s = conn.createStatement();
+
+            ResultSet result = s.executeQuery("select YEAR(AP.Day) as Year, AP.Ticker, ROUND(AVG(AP.Volume), 2) as AvgVolume "
+            		+ "from AdjustedPrices AP "
+            		+ "where AP.Ticker = '" + args[0] + "' "
+            		+ "group by YEAR(AP.Day);");
+            
+            output.println("<p>");
+            output.println("For each year, report the average trade volume per day.");
+            output.println("</p>");
+            
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>Year, Ticker, AvgVolume</th>");
+            output.println("</tr>");
+            
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Year") + ", " + result.getString("Ticker") + ", " + result.getString("AvgVolume"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+        } catch (SQLException e) {
+            System.out.println("Uh oh");
+        }
+        
+        // Third Individual Query
+        try {
+            Statement s = conn.createStatement();
+
+            ResultSet result = s.executeQuery("select MONTHNAME(Day) as Month, ROUND(AVG(Close), 2) as AvgClose, MAX(High) as HighestPrice, MIN(Low) as LowestPrice, ROUND(AVG(Volume), 2) as AvgVolume "
+            		+ "from AdjustedPrices AP "
+            		+ "where YEAR(Day) = 2016 "
+            		+ "and Ticker = '" + args[0] + "' "
+            		+ "group by MONTH(Day);");
+            
+            output.println("<p>");
+            output.println("For 2016, show the average closing price, the highest and the lowest price, and the average "
+            		+ "daily trading volume by month.");
+            output.println("</p>");
+            
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>Month, AvgClose, HighestPrice, LowestPrice, AvgVolume</th>");
+            output.println("</tr>");
+            
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Month") + ", " + result.getString("AvgClose") + ", " + result.getString("HighestPrice")
+                + ", " + result.getString("LowestPrice") + ", " + result.getString("AvgVolume"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+        } catch (SQLException e) {
+            System.out.println("Uh oh");
+        }
+        
         // Output ending html tags
         output.println("</body>");
         output.println("</html>");
