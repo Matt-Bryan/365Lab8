@@ -1,0 +1,29 @@
+-- Avinash Sharma
+-- Matt Bryan 
+-- CPE 365 Lab 8
+
+-- Compile: javac *.java
+-- Run: java -cp ./mysql-connector-java-5.1.18-bin.jar:. Driver <Ticker Name>
+
+-- Our command line argument takes a Ticker Name as input (FSLR, XOM, CB, WAT, etc.)
+
+-- General Query #4 Methodology: Top 10 stocks to watch in 2017 based on top 10 highest average closes of 2016.
+
+-- General Query #5 Methodology: The sector is considered 'Tanking' if its value of the difference in the average close of the last day in 2016 and the average
+-- close of the first day in 2016, divided by the average close of the first day is a negative value. If the value is in between 0 and less than 0.1, the 
+-- sector is considered 'Average'. If the value is in between 0.1 and less than 0.2, the sector is considered 'Above Average'. If the value is greater than 0.2,
+-- the sector is considered as 'Significantly Outperforming'. These ranges are based on estimates of different levels of how well the sector is performing in 2016.
+
+-- Individual Query #4 Methodology:
+
+-- Individual Query #5 Methodology:
+
+-- Individual Query #6 Methodology:
+
+-- Individual Query #7 Methodology: Compare your stock with the top 5 performing stocks in 2016. Compare the change in prices month-to-month and the volume of 
+-- trading. We decided that the top 5 performing stocks were the top 5 stocks in 2016 who had the largest absolute price changes (PCLN, CHTR, AMZN, ISRG, MLM).
+
+-- Individual Query #8 Methodology:
+
+
+
