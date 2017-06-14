@@ -33,17 +33,17 @@ group by T3.Year, T3.Month
 
 select CASE
 WHEN Open >= (
-				(select MIN(Low) + (MAX(High) - MIN(Low)) * 0.75
-				from AdjustedPrices AP
-				where AP.Ticker = 'CB'
-				and AP.Day < '2015-01-02')
-				 ) THEN 'Sell'
+(select MIN(Low) + (MAX(High) - MIN(Low)) * 0.75
+from AdjustedPrices AP
+where AP.Ticker = 'CB'
+and AP.Day < '2015-01-02')
+) THEN 'Sell'
 WHEN Open <= (
-				(select MIN(Low) + (MAX(High) - MIN(Low)) * 0.25
-				from AdjustedPrices AP
-				where AP.Ticker = 'CB'
-				and AP.Day < '2015-01-02')
-				 ) THEN 'Buy'
+(select MIN(Low) + (MAX(High) - MIN(Low)) * 0.25
+from AdjustedPrices AP
+where AP.Ticker = 'CB'
+and AP.Day < '2015-01-02')
+) THEN 'Buy'
 ELSE 'Hold'
 END as Decision
 from AdjustedPrices AP
@@ -54,19 +54,19 @@ and AP.Ticker = 'CB';
 
 select CASE
 WHEN Open >= (
-				(select MIN(Low) + (MAX(High) - MIN(Low)) * 0.75
-				from AdjustedPrices AP
-				where AP.Ticker = 'CB'
-				and AP.Day < '2015-06-01'
-				and AP.Day > '2015-01-02')
-				 ) THEN 'Sell'
+(select MIN(Low) + (MAX(High) - MIN(Low)) * 0.75
+from AdjustedPrices AP
+where AP.Ticker = 'CB'
+and AP.Day < '2015-06-01'
+and AP.Day > '2015-01-02')
+) THEN 'Sell'
 WHEN Open <= (
-				(select MIN(Low) + (MAX(High) - MIN(Low)) * 0.25
-				from AdjustedPrices AP
-				where AP.Ticker = 'CB'
-				and AP.Day < '2015-06-01'
-				and AP.Day > '2015-01-02')
-				 ) THEN 'Buy'
+(select MIN(Low) + (MAX(High) - MIN(Low)) * 0.25
+from AdjustedPrices AP
+where AP.Ticker = 'CB'
+and AP.Day < '2015-06-01'
+and AP.Day > '2015-01-02')
+) THEN 'Buy'
 ELSE 'Hold'
 END as Decision
 from AdjustedPrices AP
@@ -77,19 +77,19 @@ and AP.Ticker = 'CB';
 
 select CASE
 WHEN Open >= (
-				(select MIN(Low) + (MAX(High) - MIN(Low)) * 0.75
-				from AdjustedPrices AP
-				where AP.Ticker = 'CB'
-				and AP.Day < '2015-10-01'
-				and AP.Day > '2015-06-01')
-				 ) THEN 'Sell'
+(select MIN(Low) + (MAX(High) - MIN(Low)) * 0.75
+from AdjustedPrices AP
+where AP.Ticker = 'CB'
+and AP.Day < '2015-10-01'
+and AP.Day > '2015-06-01')
+) THEN 'Sell'
 WHEN Open <= (
-				(select MIN(Low) + (MAX(High) - MIN(Low)) * 0.25
-				from AdjustedPrices AP
-				where AP.Ticker = 'CB'
-				and AP.Day < '2015-10-01'
-				and AP.Day > '2015-06-01')
-				 ) THEN 'Buy'
+(select MIN(Low) + (MAX(High) - MIN(Low)) * 0.25
+from AdjustedPrices AP
+where AP.Ticker = 'CB'
+and AP.Day < '2015-10-01'
+and AP.Day > '2015-06-01')
+) THEN 'Buy'
 ELSE 'Hold'
 END as Decision
 from AdjustedPrices AP
@@ -100,19 +100,19 @@ and AP.Ticker = 'CB';
 
 select CASE
 WHEN Open >= (
-				(select MIN(Low) + (MAX(High) - MIN(Low)) * 0.75
-				from AdjustedPrices AP
-				where AP.Ticker = 'CB'
-				and AP.Day < '2016-01-04'
-				and AP.Day > '2015-10-01')
-				 ) THEN 'Sell'
+(select MIN(Low) + (MAX(High) - MIN(Low)) * 0.75
+from AdjustedPrices AP
+where AP.Ticker = 'CB'
+and AP.Day < '2016-01-04'
+and AP.Day > '2015-10-01')
+) THEN 'Sell'
 WHEN Open <= (
-				(select MIN(Low) + (MAX(High) - MIN(Low)) * 0.25
-				from AdjustedPrices AP
-				where AP.Ticker = 'CB'
-				and AP.Day < '2016-01-04'
-				and AP.Day > '2015-10-01')
-				 ) THEN 'Buy'
+(select MIN(Low) + (MAX(High) - MIN(Low)) * 0.25
+from AdjustedPrices AP
+where AP.Ticker = 'CB'
+and AP.Day < '2016-01-04'
+and AP.Day > '2015-10-01')
+) THEN 'Buy'
 ELSE 'Hold'
 END as Decision
 from AdjustedPrices AP
@@ -123,19 +123,19 @@ and AP.Ticker = 'CB';
 
 select CASE
 WHEN Open >= (
-				(select MIN(Low) + (MAX(High) - MIN(Low)) * 0.75
-				from AdjustedPrices AP
-				where AP.Ticker = 'CB'
-				and AP.Day < '2016-05-02'
-				and AP.Day > '2016-01-04')
-				 ) THEN 'Sell'
+(select MIN(Low) + (MAX(High) - MIN(Low)) * 0.75
+from AdjustedPrices AP
+where AP.Ticker = 'CB'
+and AP.Day < '2016-05-02'
+and AP.Day > '2016-01-04')
+) THEN 'Sell'
 WHEN Open <= (
-				(select MIN(Low) + (MAX(High) - MIN(Low)) * 0.25
-				from AdjustedPrices AP
-				where AP.Ticker = 'CB'
-				and AP.Day < '2016-05-02'
-				and AP.Day > '2016-01-04')
-				) THEN 'Buy'
+(select MIN(Low) + (MAX(High) - MIN(Low)) * 0.25
+from AdjustedPrices AP
+where AP.Ticker = 'CB'
+and AP.Day < '2016-05-02'
+and AP.Day > '2016-01-04')
+) THEN 'Buy'
 ELSE 'Hold'
 END as Decision
 from AdjustedPrices AP
@@ -146,19 +146,19 @@ and AP.Ticker = 'CB';
 
 select CASE
 WHEN Open >= (
-				(select MIN(Low) + (MAX(High) - MIN(Low)) * 0.75
-				from AdjustedPrices AP
-				where AP.Ticker = 'CB'
-				and AP.Day < '2016-10-03'
-				and AP.Day > '2016-05-02')
-				 ) THEN 'Sell'
+(select MIN(Low) + (MAX(High) - MIN(Low)) * 0.75
+from AdjustedPrices AP
+where AP.Ticker = 'CB'
+and AP.Day < '2016-10-03'
+and AP.Day > '2016-05-02')
+) THEN 'Sell'
 WHEN Open <= (
-				(select MIN(Low) + (MAX(High) - MIN(Low)) * 0.25
-				from AdjustedPrices AP
-				where AP.Ticker = 'CB'
-				and AP.Day < '2016-10-03'
-				and AP.Day > '2016-05-02')
-				) THEN 'Buy'
+(select MIN(Low) + (MAX(High) - MIN(Low)) * 0.25
+from AdjustedPrices AP
+where AP.Ticker = 'CB'
+and AP.Day < '2016-10-03'
+and AP.Day > '2016-05-02')
+) THEN 'Buy'
 ELSE 'Hold'
 END as Decision
 from AdjustedPrices AP

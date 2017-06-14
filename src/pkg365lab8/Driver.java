@@ -789,6 +789,268 @@ public class Driver {
             System.out.println("Uh oh");
         }
         
+        // Fifth Individual Query Part 1
+        try {
+            Statement s = conn.createStatement();
+
+            ResultSet result = s.executeQuery("select CASE "
+            		+ "WHEN Open >= ( "
+            		+ "(select MIN(Low) + (MAX(High) - MIN(Low)) * 0.75 "
+            		+ "from AdjustedPrices AP "
+            		+ "where AP.Ticker = '" + args[0] + "' "
+            		+ "and AP.Day < '2015-01-02') "
+            		+ ") THEN 'Sell' "
+            		+ "WHEN Open <= ( "
+            		+ "(select MIN(Low) + (MAX(High) - MIN(Low)) * 0.25 "
+            		+ "from AdjustedPrices AP "
+            		+ "where AP.Ticker = '" + args[0] + "' "
+            		+ "and AP.Day < '2015-01-02') "
+            		+ ") THEN 'Buy' "
+            		+ "ELSE 'Hold' "
+            		+ "END as Decision "
+            		+ "from AdjustedPrices AP "
+            		+ "where AP.Day = '2015-01-02' "
+            		+ "and AP.Ticker = '" + args[0] + "';");
+            
+            output.println("<p>");
+            output.println("<h2>Individual Stock Data #5</h2>");
+            output.println("For each of the following dates (January 1, 2015, June 1, 2015, October 1, 2015, January 1, 2016 "
+            		+ "May 1, 2016, October 1, 2016) determine your position on the stock (Buy, Hold, or Sell).");
+            output.println("</p>");
+            
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>2015Jan1Decision</th>");
+            output.println("</tr>");
+            
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Decision"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+        } catch (SQLException e) {
+            System.out.println("Uh oh");
+        }
+        
+        // Fifth Individual Query Part 2
+        try {
+            Statement s = conn.createStatement();
+
+            ResultSet result = s.executeQuery("select CASE "
+            		+ "WHEN Open >= ( "
+            		+ "(select MIN(Low) + (MAX(High) - MIN(Low)) * 0.75 "
+            		+ "from AdjustedPrices AP "
+            		+ "where AP.Ticker = '" + args[0] + "' "
+            		+ "and AP.Day < '2015-06-01' "
+            		+ "and AP.Day > '2015-01-02') "
+            		+ ") THEN 'Sell' "
+            		+ "WHEN Open <= ( "
+            		+ "(select MIN(Low) + (MAX(High) - MIN(Low)) * 0.25 "
+            		+ "from AdjustedPrices AP "
+            		+ "where AP.Ticker = '" + args[0] + "' "
+            		+ "and AP.Day < '2015-06-01' "
+            		+ "and AP.Day > '2015-01-02') "
+            		+ ") THEN 'Buy' "
+            		+ "ELSE 'Hold' "
+            		+ "END as Decision "
+            		+ "from AdjustedPrices AP "
+            		+ "where AP.Day = '2015-06-01' "
+            		+ "and AP.Ticker = '" + args[0] + "';");
+            
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>2015June1Decision</th>");
+            output.println("</tr>");
+            
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Decision"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+        } catch (SQLException e) {
+            System.out.println("Uh oh");
+        }
+        
+        // Fifth Individual Query Part 3
+        try {
+            Statement s = conn.createStatement();
+
+            ResultSet result = s.executeQuery("select CASE "
+            		+ "WHEN Open >= ( "
+            		+ "(select MIN(Low) + (MAX(High) - MIN(Low)) * 0.75 "
+            		+ "from AdjustedPrices AP "
+            		+ "where AP.Ticker = '" + args[0] + "' "
+            		+ "and AP.Day < '2015-10-01' "
+            		+ "and AP.Day > '2015-06-01') "
+            		+ ") THEN 'Sell' "
+            		+ "WHEN Open <= ( "
+            		+ "(select MIN(Low) + (MAX(High) - MIN(Low)) * 0.25 "
+            		+ "from AdjustedPrices AP "
+            		+ "where AP.Ticker = '" + args[0] + "' "
+            		+ "and AP.Day < '2015-10-01' "
+            		+ "and AP.Day > '2015-06-01') "
+            		+ ") THEN 'Buy' "
+            		+ "ELSE 'Hold' "
+            		+ "END as Decision "
+            		+ "from AdjustedPrices AP "
+            		+ "where AP.Day = '2015-10-01' "
+            		+ "and AP.Ticker = '" + args[0] + "';");
+            
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>2015Oct1Decision</th>");
+            output.println("</tr>");
+            
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Decision"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+        } catch (SQLException e) {
+            System.out.println("Uh oh");
+        }
+        
+        // Fifth Individual Query Part 4
+        try {
+            Statement s = conn.createStatement();
+
+            ResultSet result = s.executeQuery("select CASE "
+            		+ "WHEN Open >= ( "
+            		+ "(select MIN(Low) + (MAX(High) - MIN(Low)) * 0.75 "
+            		+ "from AdjustedPrices AP "
+            		+ "where AP.Ticker = '" + args[0] + "' "
+            		+ "and AP.Day < '2016-01-04' "
+            		+ "and AP.Day > '2015-10-01') "
+            		+ ") THEN 'Sell' "
+            		+ "WHEN Open <= ( "
+            		+ "(select MIN(Low) + (MAX(High) - MIN(Low)) * 0.25 "
+            		+ "from AdjustedPrices AP "
+            		+ "where AP.Ticker = '" + args[0] + "' "
+            		+ "and AP.Day < '2016-01-04' "
+            		+ "and AP.Day > '2015-10-01') "
+            		+ ") THEN 'Buy' "
+            		+ "ELSE 'Hold' "
+            		+ "END as Decision "
+            		+ "from AdjustedPrices AP "
+            		+ "where AP.Day = '2016-01-04' "
+            		+ "and AP.Ticker = '" + args[0] + "';");
+            
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>2016Jan1Decision</th>");
+            output.println("</tr>");
+            
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Decision"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+        } catch (SQLException e) {
+            System.out.println("Uh oh");
+        }
+        
+        // Fifth Individual Query Part 5
+        try {
+            Statement s = conn.createStatement();
+
+            ResultSet result = s.executeQuery("select CASE "
+            		+ "WHEN Open >= ( "
+            		+ "(select MIN(Low) + (MAX(High) - MIN(Low)) * 0.75 "
+            		+ "from AdjustedPrices AP "
+            		+ "where AP.Ticker = '" + args[0] + "' "
+            		+ "and AP.Day < '2016-05-02' "
+            		+ "and AP.Day > '2016-01-04') "
+            		+ ") THEN 'Sell' "
+            		+ "WHEN Open <= ( "
+            		+ "(select MIN(Low) + (MAX(High) - MIN(Low)) * 0.25 "
+            		+ "from AdjustedPrices AP "
+            		+ "where AP.Ticker = '" + args[0] + "' "
+            		+ "and AP.Day < '2016-05-02' "
+            		+ "and AP.Day > '2016-01-04') "
+            		+ ") THEN 'Buy' "
+            		+ "ELSE 'Hold' "
+            		+ "END as Decision "
+            		+ "from AdjustedPrices AP "
+            		+ "where AP.Day = '2016-05-02' "
+            		+ "and AP.Ticker = '" + args[0] + "';");
+            
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>2016May1Decision</th>");
+            output.println("</tr>");
+            
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Decision"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+        } catch (SQLException e) {
+            System.out.println("Uh oh");
+        }
+        
+        // Fifth Individual Query Part 6
+        try {
+            Statement s = conn.createStatement();
+
+            ResultSet result = s.executeQuery("select CASE "
+            		+ "WHEN Open >= ( "
+            		+ "(select MIN(Low) + (MAX(High) - MIN(Low)) * 0.75 "
+            		+ "from AdjustedPrices AP "
+            		+ "where AP.Ticker = '" + args[0] + "' "
+            		+ "and AP.Day < '2016-10-03' "
+            		+ "and AP.Day > '2016-05-02') "
+            		+ ") THEN 'Sell' "
+            		+ "WHEN Open <= ( "
+            		+ "(select MIN(Low) + (MAX(High) - MIN(Low)) * 0.25 "
+            		+ "from AdjustedPrices AP "
+            		+ "where AP.Ticker = '" + args[0] + "' "
+            		+ "and AP.Day < '2016-10-03' "
+            		+ "and AP.Day > '2016-05-02') "
+            		+ ") THEN 'Buy' "
+            		+ "ELSE 'Hold' "
+            		+ "END as Decision "
+            		+ "from AdjustedPrices AP "
+            		+ "where AP.Day = '2016-10-03' "
+            		+ "and AP.Ticker = '" + args[0] + "';");
+            
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>2016Oct1Decision</th>");
+            output.println("</tr>");
+            
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Decision"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+        } catch (SQLException e) {
+            System.out.println("Uh oh");
+        }
+        
         // Output ending html tags
         output.println("</body>");
         output.println("</html>");
