@@ -76,7 +76,7 @@ public class Driver {
             output.println("</tr>");
             output.println("</table>");
         } catch (SQLException e) {
-            System.out.println("Uh oh");
+            e.printStackTrace();
         }
         
         // First Query Part 2
@@ -104,7 +104,7 @@ public class Driver {
             output.println("</tr>");
             output.println("</table>");
         } catch (SQLException e) {
-            System.out.println("Uh oh");
+            e.printStackTrace();
         }
         
         // First Query Part 3
@@ -143,7 +143,7 @@ public class Driver {
             output.println("</tr>");
             output.println("</table>");
         } catch (SQLException e) {
-            System.out.println("Uh oh");
+            e.printStackTrace();
         }
         
         // First Query Part 4
@@ -183,7 +183,7 @@ public class Driver {
             output.println("</tr>");
             output.println("</table>");
         } catch (SQLException e) {
-            System.out.println("Uh oh");
+            e.printStackTrace();
         }
         
         // Second Query
@@ -217,7 +217,7 @@ public class Driver {
 
             output.println("</table>");
         } catch (SQLException e) {
-            System.out.println("Uh oh");
+            e.printStackTrace();
         }
         
         // Third Query Part 1
@@ -328,7 +328,7 @@ public class Driver {
 
             output.println("</table>");
         } catch (SQLException e) {
-            System.out.println("Uh oh");
+            e.printStackTrace();
         }
         
         // Third Query Part 2
@@ -438,7 +438,7 @@ public class Driver {
 
             output.println("</table>");
         } catch (SQLException e) {
-            System.out.println("Uh oh");
+            e.printStackTrace();
         }
         
         // Fourth Query
@@ -474,7 +474,7 @@ public class Driver {
 
             output.println("</table>");
         } catch (SQLException e) {
-            System.out.println("Uh oh");
+            e.printStackTrace();
         }
         
         // Fifth Query
@@ -531,7 +531,7 @@ public class Driver {
 
             output.println("</table>");
         } catch (SQLException e) {
-            System.out.println("Uh oh");
+            e.printStackTrace();
         }
         
         // ----------------------------------------------------------------------------------------------------------------
@@ -565,7 +565,7 @@ public class Driver {
 
             output.println("</table>");
         } catch (SQLException e) {
-            System.out.println("Uh oh");
+            e.printStackTrace();
         }
         
         // Second Individual Query Part 1
@@ -612,7 +612,7 @@ public class Driver {
 
             output.println("</table>");
         } catch (SQLException e) {
-            System.out.println("Uh oh");
+            e.printStackTrace();
         }
         
         // Second Individual Query Part 2
@@ -643,7 +643,7 @@ public class Driver {
 
             output.println("</table>");
         } catch (SQLException e) {
-            System.out.println("Uh oh");
+            e.printStackTrace();
         }
         
         // Second Individual Query Part 3
@@ -674,7 +674,7 @@ public class Driver {
 
             output.println("</table>");
         } catch (SQLException e) {
-            System.out.println("Uh oh");
+            e.printStackTrace();
         }
         
         // Second Individual Query Part 4
@@ -705,7 +705,7 @@ public class Driver {
 
             output.println("</table>");
         } catch (SQLException e) {
-            System.out.println("Uh oh");
+            e.printStackTrace();
         }
         
         // Third Individual Query
@@ -740,7 +740,7 @@ public class Driver {
 
             output.println("</table>");
         } catch (SQLException e) {
-            System.out.println("Uh oh");
+            e.printStackTrace();
         }
         
         // Fourth Individual Query
@@ -786,7 +786,7 @@ public class Driver {
 
             output.println("</table>");
         } catch (SQLException e) {
-            System.out.println("Uh oh");
+            e.printStackTrace();
         }
         
         // Fifth Individual Query Part 1
@@ -833,7 +833,7 @@ public class Driver {
 
             output.println("</table>");
         } catch (SQLException e) {
-            System.out.println("Uh oh");
+            e.printStackTrace();
         }
         
         // Fifth Individual Query Part 2
@@ -876,7 +876,7 @@ public class Driver {
 
             output.println("</table>");
         } catch (SQLException e) {
-            System.out.println("Uh oh");
+            e.printStackTrace();
         }
         
         // Fifth Individual Query Part 3
@@ -919,7 +919,7 @@ public class Driver {
 
             output.println("</table>");
         } catch (SQLException e) {
-            System.out.println("Uh oh");
+            e.printStackTrace();
         }
         
         // Fifth Individual Query Part 4
@@ -962,7 +962,7 @@ public class Driver {
 
             output.println("</table>");
         } catch (SQLException e) {
-            System.out.println("Uh oh");
+            e.printStackTrace();
         }
         
         // Fifth Individual Query Part 5
@@ -1005,7 +1005,7 @@ public class Driver {
 
             output.println("</table>");
         } catch (SQLException e) {
-            System.out.println("Uh oh");
+            e.printStackTrace();
         }
         
         // Fifth Individual Query Part 6
@@ -1048,7 +1048,7 @@ public class Driver {
 
             output.println("</table>");
         } catch (SQLException e) {
-            System.out.println("Uh oh");
+            e.printStackTrace();
         }
         
         // Sixth Individual Query Part 1
@@ -1123,15 +1123,15 @@ public class Driver {
             output.println("</table>");
             output.println("</br>");
         } catch (SQLException e) {
-            System.out.println("Uh oh");
+            e.printStackTrace();
         }
         
         // Seventh Individual Query Part 2
         try {
             Statement s = conn.createStatement();
 
-            ResultSet result = s.executeQuery("select FSLR.Year, FSLR.AvgVolume" + args[0] + ", PCLN.AvgVolumePCLN, FSLR.AvgVolumeFSLR - PCLN.AvgVolumePCLN as " + args[0] + "vsPCLNVolumes "
-            		+ "from (select YEAR(AP.Day) as Year, AVG(AP.Volume) as AvgVolumeFSLR "
+            ResultSet result = s.executeQuery("select FSLR.Year, FSLR.AvgVolume, PCLN.AvgVolumePCLN, FSLR.AvgVolume - PCLN.AvgVolumePCLN as " + args[0] + "vsPCLNVolumes "
+            		+ "from (select YEAR(AP.Day) as Year, AVG(AP.Volume) as AvgVolume "
             		+ "from AdjustedPrices AP "
             		+ "where AP.Ticker = '" + args[0] + "' "
             		+ "and YEAR(AP.Day) = 2016) FSLR, "
@@ -1143,13 +1143,13 @@ public class Driver {
             
             output.println("<table>");
             output.println("<tr>");
-            output.println("<th align='left'>Year, AvgVolume" + args[0] + ", AvgVolumePCLN, " + args[0] + "vsPCLNVolumes</th>");
+            output.println("<th align='left'>Year, AvgVolume, AvgVolumePCLN, " + args[0] + "vsPCLNVolumes</th>");
             output.println("</tr>");
             
             while (result.next()) {
                 output.println("<tr>");
                 output.print("<td>");
-                output.print(result.getString("Year") + ", " + result.getString("AvgVolume" + args[0]) + ", " + result.getString("AvgVolumePCLN")
+                output.print(result.getString("Year") + ", " + result.getString("AvgVolume") + ", " + result.getString("AvgVolumePCLN")
                 + ", " + result.getString(args[0] + "vsPCLNVolumes"));
                 output.println("</td>");
                 output.println("</tr>");
@@ -1158,7 +1158,7 @@ public class Driver {
             output.println("</table>");
             output.println("</br>");
         } catch (SQLException e) {
-            System.out.println("Uh oh");
+            e.printStackTrace();
         }
         
         // Seventh Individual Query Part 3
@@ -1222,15 +1222,15 @@ public class Driver {
             output.println("</table>");
             output.println("</br>");
         } catch (SQLException e) {
-            System.out.println("Uh oh");
+            e.printStackTrace();
         }
         
         // Seventh Individual Query Part 4
         try {
             Statement s = conn.createStatement();
 
-            ResultSet result = s.executeQuery("select FSLR.Year, FSLR.AvgVolume" + args[0] + ", CHTR.AvgVolumeCHTR, FSLR.AvgVolumeFSLR - CHTR.AvgVolumeCHTR as " + args[0] + "vsCHTRVolumes "
-            		+ "from (select YEAR(AP.Day) as Year, AVG(AP.Volume) as AvgVolumeFSLR "
+            ResultSet result = s.executeQuery("select FSLR.Year, FSLR.AvgVolume, CHTR.AvgVolumeCHTR, FSLR.AvgVolume - CHTR.AvgVolumeCHTR as " + args[0] + "vsCHTRVolumes "
+            		+ "from (select YEAR(AP.Day) as Year, AVG(AP.Volume) as AvgVolume "
             		+ "from AdjustedPrices AP "
             		+ "where AP.Ticker = '" + args[0] + "' "
             		+ "and YEAR(AP.Day) = 2016) FSLR, "
@@ -1242,13 +1242,13 @@ public class Driver {
             
             output.println("<table>");
             output.println("<tr>");
-            output.println("<th align='left'>Year, AvgVolume" + args[0] + ", AvgVolumeCHTR, " + args[0] + "vsCHTRVolumes</th>");
+            output.println("<th align='left'>Year, AvgVolume, AvgVolumeCHTR, " + args[0] + "vsCHTRVolumes</th>");
             output.println("</tr>");
             
             while (result.next()) {
                 output.println("<tr>");
                 output.print("<td>");
-                output.print(result.getString("Year") + ", " + result.getString("AvgVolume" + args[0]) + ", " + result.getString("AvgVolumeCHTR")
+                output.print(result.getString("Year") + ", " + result.getString("AvgVolume") + ", " + result.getString("AvgVolumeCHTR")
                 + ", " + result.getString(args[0] + "vsCHTRVolumes"));
                 output.println("</td>");
                 output.println("</tr>");
@@ -1257,7 +1257,7 @@ public class Driver {
             output.println("</table>");
             output.println("</br>");
         } catch (SQLException e) {
-            System.out.println("Uh oh");
+            e.printStackTrace();
         }
         
         // Seventh Individual Query Part 5
@@ -1321,7 +1321,7 @@ public class Driver {
             output.println("</table>");
             output.println("</br>");
         } catch (SQLException e) {
-            System.out.println("Uh oh");
+            e.printStackTrace();
         }
         
         // Seventh Individual Query Part 6
@@ -1356,7 +1356,7 @@ public class Driver {
             output.println("</table>");
             output.println("</br>");
         } catch (SQLException e) {
-            System.out.println("Uh oh");
+            e.printStackTrace();
         }
         
         // Seventh Individual Query Part 7
@@ -1420,7 +1420,7 @@ public class Driver {
             output.println("</table>");
             output.println("</br>");
         } catch (SQLException e) {
-            System.out.println("Uh oh");
+            e.printStackTrace();
         }
         
         // Seventh Individual Query Part 8
@@ -1455,7 +1455,7 @@ public class Driver {
             output.println("</table>");
             output.println("</br>");
         } catch (SQLException e) {
-            System.out.println("Uh oh");
+            e.printStackTrace();
         }
         
         // Seventh Individual Query Part 9
@@ -1519,7 +1519,7 @@ public class Driver {
             output.println("</table>");
             output.println("</br>");
         } catch (SQLException e) {
-            System.out.println("Uh oh");
+            e.printStackTrace();
         }
         
         // Seventh Individual Query Part 10
@@ -1554,7 +1554,7 @@ public class Driver {
             output.println("</table>");
             output.println("</br>");
         } catch (SQLException e) {
-            System.out.println("Uh oh");
+            e.printStackTrace();
         }
         
         // Eighth Individual Query Part 1
@@ -1626,7 +1626,7 @@ public class Driver {
             output.println("</table>");
             output.println("</br>");
         } catch (SQLException e) {
-            System.out.println("Uh oh");
+            e.printStackTrace();
         }
         
         // Eighth Individual Query Part 2
@@ -1690,7 +1690,7 @@ public class Driver {
             output.println("</table>");
             output.println("</br>");
         } catch (SQLException e) {
-            System.out.println("Uh oh");
+            e.printStackTrace();
         }
         
         // Eighth Individual Query Part 3
@@ -1754,7 +1754,7 @@ public class Driver {
             output.println("</table>");
             output.println("</br>");
         } catch (SQLException e) {
-            System.out.println("Uh oh");
+            e.printStackTrace();
         }
         
         // Output ending html tags
