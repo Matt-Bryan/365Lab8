@@ -9,7 +9,7 @@ select *
 from (select AP.Ticker, MIN(AP.Day) as FirstDay, MAX(AP.Day) as LastDay
 from AdjustedPrices AP
 where AP.Ticker = 'FSLR') Solar
-UNION
+
 select *
 from (select AP.Ticker, MIN(AP.Day) as FirstDay, MAX(AP.Day) as LastDay
 from AdjustedPrices AP

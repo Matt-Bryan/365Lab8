@@ -1,3 +1,8 @@
+/*
+ * Avinash Sharma and Matt Bryan
+ * CPE 365 Lab 8
+ * 
+ */
 package pkg365lab8;
 
 import java.io.File;
@@ -23,9 +28,9 @@ public class Driver {
         } catch (FileNotFoundException ex) {
             System.out.println("Credentials file not found");
         }
-        
+
         // Output html tags
-        output.println("<!DOCTYPE HTML>");
+        output.println("<!DOCTYPE html>");
         output.println("<html>");
         output.println("<body>");
         
@@ -45,14 +50,16 @@ public class Driver {
             System.out.println("Could not open connection");
         }
 
-        // First Query
+        // First Query Part 1
         try {
             Statement s = conn.createStatement();
 
-            ResultSet result = s.executeQuery("select COUNT(Ticker) as NumSecurities from AdjustedPrices where Day = '2016-01-04'");
+            ResultSet result = s.executeQuery("select COUNT(Ticker) as NumSecurities "
+                    + "from AdjustedPrices where Day = '2016-01-04'");
             
             output.println("<p>");
-            output.println("This shows the number of securities traded at the start of 2016");
+            output.println("<h2>General Analytical Data #1</h2>");
+            output.println("This shows the number of securities traded at the start of 2016.");
             output.println("</p>");
             
             output.println("<table>");
@@ -67,6 +74,461 @@ public class Driver {
             output.print(result.getString("NumSecurities"));
             output.println("</td>");
             output.println("</tr>");
+            output.println("</table>");
+        } catch (SQLException e) {
+            System.out.println("Uh oh");
+        }
+        
+        // First Query Part 2
+        try {
+            Statement s = conn.createStatement();
+
+            ResultSet result = s.executeQuery("select COUNT(Ticker) as NumSecurities "
+                    + "from AdjustedPrices where Day = '2016-12-30';");
+            
+            output.println("<p>");
+            output.println("This shows the number of securities traded at the end of 2016.");
+            output.println("</p>");
+            
+            output.println("<table>");
+            
+            output.println("<tr>");
+            output.println("<th>NumSecurities</th>");
+            output.println("</tr>");
+
+            output.println("<tr>");
+            result.next();
+            output.print("<td>");
+            output.print(result.getString("NumSecurities"));
+            output.println("</td>");
+            output.println("</tr>");
+            output.println("</table>");
+        } catch (SQLException e) {
+            System.out.println("Uh oh");
+        }
+        
+        // First Query Part 3
+        try {
+            Statement s = conn.createStatement();
+
+            ResultSet result = s.executeQuery("select COUNT(*) as NumIncreases "
+                    + "from (select Sixteen.Ticker, IF(Sixteen.SixClose > Fifteen.FifClose, 'Increase', 'Decrease') as IncDec from (select AP.Ticker, AP.Close as FifClose "
+                    + "from AdjustedPrices AP "
+                    + "where AP.Day = (select MAX(AP.Day) AS Max "
+                    + "from AdjustedPrices AP "
+                    + "where YEAR(AP.Day) = 2015)) Fifteen, "
+                    + "(select AP.Ticker, AP.Close as SixClose "
+                    + "from AdjustedPrices AP "
+                    + "where AP.Day = (select MAX(AP.Day) AS Max "
+                    + "from AdjustedPrices AP "
+                    + "where YEAR(AP.Day) = 2016)) Sixteen "
+                    + "where Fifteen.Ticker = Sixteen.Ticker) Changes "
+                    + "where Changes.IncDec = 'Increase';");
+            
+            output.println("<p>");
+            output.println("This shows the number of securities whose prices increased between end of 2015 and end of 2016.");
+            output.println("</p>");
+            
+            output.println("<table>");
+            
+            output.println("<tr>");
+            output.println("<th>NumIncreases</th>");
+            output.println("</tr>");
+
+            output.println("<tr>");
+            result.next();
+            output.print("<td>");
+            output.print(result.getString("NumIncreases"));
+            output.println("</td>");
+            output.println("</tr>");
+            output.println("</table>");
+        } catch (SQLException e) {
+            System.out.println("Uh oh");
+        }
+        
+        // First Query Part 4
+        try {
+            Statement s = conn.createStatement();
+
+            ResultSet result = s.executeQuery("select COUNT(*) as NumDecreases "
+                    + "from (select Sixteen.Ticker, IF(Sixteen.SixClose < Fifteen.FifClose, 'Decrease', 'Increase') as IncDec "
+                    + "from (select AP.Ticker, AP.Close as FifClose "
+                    + "from AdjustedPrices AP "
+                    + "where AP.Day = (select MAX(AP.Day) AS Max "
+                    + "from AdjustedPrices AP "
+                    + "where YEAR(AP.Day) = 2015)) Fifteen, "
+                    + "(select AP.Ticker, AP.Close as SixClose "
+                    + "from AdjustedPrices AP "
+                    + "where AP.Day = (select MAX(AP.Day) AS Max "
+                    + "from AdjustedPrices AP "
+                    + "where YEAR(AP.Day) = 2016)) Sixteen "
+                    + "where Fifteen.Ticker = Sixteen.Ticker) Changes "
+                    + "where Changes.IncDec = 'Decrease';");
+            
+            output.println("<p>");
+            output.println("This shows the number of securities whose prices decreased between end of 2015 and end of 2016.");
+            output.println("</p>");
+            
+            output.println("<table>");
+            
+            output.println("<tr>");
+            output.println("<th>NumDecreases</th>");
+            output.println("</tr>");
+
+            output.println("<tr>");
+            result.next();
+            output.print("<td>");
+            output.print(result.getString("NumDecreases"));
+            output.println("</td>");
+            output.println("</tr>");
+            output.println("</table>");
+        } catch (SQLException e) {
+            System.out.println("Uh oh");
+        }
+        
+        // Second Query
+        try {
+            Statement s = conn.createStatement();
+
+            ResultSet result = s.executeQuery("select distinct S.Name, AP.Ticker "
+                    + "from AdjustedPrices AP, Securities S "
+                    + "where AP.Ticker = S.Ticker "
+                    + "and YEAR(AP.Day) = 2016 "
+                    + "order by AP.Volume desc "
+                    + "limit 10;");
+            
+            output.println("<p>");
+            output.println("<h2>General Analytical Data #2</h2>");
+            output.println("Report top 10 stocks that were most heavily traded in 2016.");
+            output.println("</p>");
+            
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>Name, Ticker</th>");
+            output.println("</tr>");
+            
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Name") + ", " + result.getString("Ticker"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+        } catch (SQLException e) {
+            System.out.println("Uh oh");
+        }
+        
+        // Third Query Part 1
+        try {
+            Statement s = conn.createStatement();
+
+            ResultSet result = s.executeQuery("select * "
+                    + "from (select YEAR(LastDay.Day) AS Year, LastDay.Ticker, (LastDay.Close - FirstDay.Open) as AbsolutePrice "
+                    + "from (select AP.Day, AP.Ticker, AP.Open "
+                    + "from AdjustedPrices AP "
+                    + "where AP.Day = '2010-01-04') FirstDay, "
+                    + "(select AP.Day, AP.Ticker, AP.Close "
+                    + "from AdjustedPrices AP "
+                    + "where AP.Day = '2010-12-31') LastDay "
+                    + "where FirstDay.Ticker = LastDay.Ticker "
+                    + "order by AbsolutePrice desc "
+                    + "limit 5) as Y1 "
+                    + "UNION "
+                    + "select * "
+                    + "from (select YEAR(LastDay.Day) AS Year, LastDay.Ticker, (LastDay.Close - FirstDay.Open) as AbsolutePrice "
+                    + "from (select AP.Day, AP.Ticker, AP.Open "
+                    + "from AdjustedPrices AP "
+                    + "where AP.Day = '2011-01-03') FirstDay, "
+                    + "(select AP.Day, AP.Ticker, AP.Close "
+                    + "from AdjustedPrices AP "
+                    + "where AP.Day = '2011-12-30') LastDay "
+                    + "where FirstDay.Ticker = LastDay.Ticker "
+                    + "order by AbsolutePrice desc "
+                    + "limit 5) as Y2 "
+                    + "UNION "
+                    + "select * "
+                    + "from (select YEAR(LastDay.Day) AS Year, LastDay.Ticker, (LastDay.Close - FirstDay.Open) as AbsolutePrice "
+                    + "from (select AP.Day, AP.Ticker, AP.Open "
+                    + "from AdjustedPrices AP "
+                    + "where AP.Day = '2012-01-03') FirstDay, "
+                    + "(select AP.Day, AP.Ticker, AP.Close "
+                    + "from AdjustedPrices AP "
+                    + "where AP.Day = '2012-12-31') LastDay "
+                    + "where FirstDay.Ticker = LastDay.Ticker "
+                    + "order by AbsolutePrice desc "
+                    + "limit 5) as Y3 "
+                    + "UNION "
+                    + "select * "
+                    + "from (select YEAR(LastDay.Day) AS Year, LastDay.Ticker, (LastDay.Close - FirstDay.Open) as AbsolutePrice "
+                    + "from (select AP.Day, AP.Ticker, AP.Open "
+                    + "from AdjustedPrices AP "
+                    + "where AP.Day = '2013-01-02') FirstDay, "
+                    + "(select AP.Day, AP.Ticker, AP.Close "
+                    + "from AdjustedPrices AP "
+                    + "where AP.Day = '2013-12-31') LastDay "
+                    + "where FirstDay.Ticker = LastDay.Ticker "
+                    + "order by AbsolutePrice desc "
+                    + "limit 5) as Y4 "
+                    + "UNION "
+                    + "select * "
+                    + "from (select YEAR(LastDay.Day) AS Year, LastDay.Ticker, (LastDay.Close - FirstDay.Open) as AbsolutePrice "
+                    + "from (select AP.Day, AP.Ticker, AP.Open "
+                    + "from AdjustedPrices AP "
+                    + "where AP.Day = '2014-01-02') FirstDay, "
+                    + "(select AP.Day, AP.Ticker, AP.Close "
+                    + "from AdjustedPrices AP "
+                    + "where AP.Day = '2014-12-31') LastDay "
+                    + "where FirstDay.Ticker = LastDay.Ticker "
+                    + "order by AbsolutePrice desc "
+                    + "limit 5) as Y5 "
+                    + "UNION "
+                    + "select * "
+                    + "from (select YEAR(LastDay.Day) AS Year, LastDay.Ticker, (LastDay.Close - FirstDay.Open) as AbsolutePrice "
+                    + "from (select AP.Day, AP.Ticker, AP.Open "
+                    + "from AdjustedPrices AP "
+                    + "where AP.Day = '2015-01-02') FirstDay, "
+                    + "(select AP.Day, AP.Ticker, AP.Close "
+                    + "from AdjustedPrices AP "
+                    + "where AP.Day = '2015-12-31') LastDay "
+                    + "where FirstDay.Ticker = LastDay.Ticker "
+                    + "order by AbsolutePrice desc "
+                    + "limit 5) as Y6 "
+                    + "UNION "
+                    + "select * "
+                    + "from (select YEAR(LastDay.Day) AS Year, LastDay.Ticker, (LastDay.Close - FirstDay.Open) as AbsolutePrice "
+                    + "from (select AP.Day, AP.Ticker, AP.Open "
+                    + "from AdjustedPrices AP "
+                    + "where AP.Day = '2016-01-04') FirstDay, "
+                    + "(select AP.Day, AP.Ticker, AP.Close "
+                    + "from AdjustedPrices AP "
+                    + "where AP.Day = '2016-12-30') LastDay "
+                    + "where FirstDay.Ticker = LastDay.Ticker "
+                    + "order by AbsolutePrice desc "
+                    + "limit 5) as Y7;");
+            
+            output.println("<p>");
+            output.println("<h2>General Analytical Data #3</h2>");
+            output.println("For each year, report top 5 stocks in terms of absolute price increase.");
+            output.println("</p>");
+            
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>Year, Ticker, AbsolutePrice</th>");
+            output.println("</tr>");
+            
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Year") + ", " + result.getString("Ticker") + ", " + result.getString("AbsolutePrice"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+        } catch (SQLException e) {
+            System.out.println("Uh oh");
+        }
+        
+        // Third Query Part 2
+        try {
+            Statement s = conn.createStatement();
+
+            ResultSet result = s.executeQuery("select * "
+                    + "from (select YEAR(LastDay.Day) AS Year, LastDay.Ticker, (LastDay.Close - FirstDay.Open) / FirstDay.Open as RelativePrice "
+                    + "from (select AP.Day, AP.Ticker, AP.Open "
+                    + "from AdjustedPrices AP "
+                    + "where AP.Day = '2010-01-04') FirstDay, "
+                    + "(select AP.Day, AP.Ticker, AP.Close "
+                    + "from AdjustedPrices AP "
+                    + "where AP.Day = '2010-12-31') LastDay "
+                    + "where FirstDay.Ticker = LastDay.Ticker "
+                    + "order by RelativePrice desc "
+                    + "limit 5) as Y1 "
+                    + "UNION "
+                    + "select * "
+                    + "from (select YEAR(LastDay.Day) AS Year, LastDay.Ticker, (LastDay.Close - FirstDay.Open) / FirstDay.Open as RelativePrice "
+                    + "from (select AP.Day, AP.Ticker, AP.Open "
+                    + "from AdjustedPrices AP "
+                    + "where AP.Day = '2011-01-03') FirstDay, "
+                    + "(select AP.Day, AP.Ticker, AP.Close "
+                    + "from AdjustedPrices AP "
+                    + "where AP.Day = '2011-12-30') LastDay "
+                    + "where FirstDay.Ticker = LastDay.Ticker "
+                    + "order by RelativePrice desc "
+                    + "limit 5) as Y2 "
+                    + "UNION "
+                    + "select * "
+                    + "from (select YEAR(LastDay.Day) AS Year, LastDay.Ticker, (LastDay.Close - FirstDay.Open) / FirstDay.Open as RelativePrice "
+                    + "from (select AP.Day, AP.Ticker, AP.Open "
+                    + "from AdjustedPrices AP "
+                    + "where AP.Day = '2012-01-03') FirstDay, "
+                    + "(select AP.Day, AP.Ticker, AP.Close "
+                    + "from AdjustedPrices AP "
+                    + "where AP.Day = '2012-12-31') LastDay "
+                    + "where FirstDay.Ticker = LastDay.Ticker "
+                    + "order by RelativePrice desc "
+                    + "limit 5) as Y3 "
+                    + "UNION "
+                    + "select * "
+                    + "from (select YEAR(LastDay.Day) AS Year, LastDay.Ticker, (LastDay.Close - FirstDay.Open) / FirstDay.Open as RelativePrice "
+                    + "from (select AP.Day, AP.Ticker, AP.Open "
+                    + "from AdjustedPrices AP "
+                    + "where AP.Day = '2013-01-02') FirstDay, "
+                    + "(select AP.Day, AP.Ticker, AP.Close "
+                    + "from AdjustedPrices AP "
+                    + "where AP.Day = '2013-12-31') LastDay "
+                    + "where FirstDay.Ticker = LastDay.Ticker "
+                    + "order by RelativePrice desc "
+                    + "limit 5) as Y4 "
+                    + "UNION "
+                    + "select * "
+                    + "from (select YEAR(LastDay.Day) AS Year, LastDay.Ticker, (LastDay.Close - FirstDay.Open) / FirstDay.Open as RelativePrice "
+                    + "from (select AP.Day, AP.Ticker, AP.Open "
+                    + "from AdjustedPrices AP "
+                    + "where AP.Day = '2014-01-02') FirstDay, "
+                    + "(select AP.Day, AP.Ticker, AP.Close "
+                    + "from AdjustedPrices AP "
+                    + "where AP.Day = '2014-12-31') LastDay "
+                    + "where FirstDay.Ticker = LastDay.Ticker "
+                    + "order by RelativePrice desc "
+                    + "limit 5) as Y5 "
+                    + "UNION "
+                    + "select * "
+                    + "from (select YEAR(LastDay.Day) AS Year, LastDay.Ticker, (LastDay.Close - FirstDay.Open) / FirstDay.Open as RelativePrice "
+                    + "from (select AP.Day, AP.Ticker, AP.Open "
+                    + "from AdjustedPrices AP "
+                    + "where AP.Day = '2015-01-02') FirstDay, "
+                    + "(select AP.Day, AP.Ticker, AP.Close "
+                    + "from AdjustedPrices AP "
+                    + "where AP.Day = '2015-12-31') LastDay "
+                    + "where FirstDay.Ticker = LastDay.Ticker "
+                    + "order by RelativePrice desc "
+                    + "limit 5) as Y6 "
+                    + "UNION "
+                    + "select * "
+                    + "from (select YEAR(LastDay.Day) AS Year, LastDay.Ticker, (LastDay.Close - FirstDay.Open) / FirstDay.Open as RelativePrice "
+                    + "from (select AP.Day, AP.Ticker, AP.Open "
+                    + "from AdjustedPrices AP "
+                    + "where AP.Day = '2016-01-04') FirstDay, "
+                    + "(select AP.Day, AP.Ticker, AP.Close "
+                    + "from AdjustedPrices AP "
+                    + "where AP.Day = '2016-12-30') LastDay "
+                    + "where FirstDay.Ticker = LastDay.Ticker "
+                    + "order by RelativePrice desc "
+                    + "limit 5) as Y7;");
+            
+            output.println("<p>");
+            output.println("For each year, report top 5 stocks in terms of relative price increase.");
+            output.println("</p>");
+            
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>Year, Ticker, RelativePrice</th>");
+            output.println("</tr>");
+            
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Year") + ", " + result.getString("Ticker") + ", " + result.getString("RelativePrice"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+        } catch (SQLException e) {
+            System.out.println("Uh oh");
+        }
+        
+        // Fourth Query
+        try {
+            Statement s = conn.createStatement();
+
+            ResultSet result = s.executeQuery("select Averages.Name, Averages.Ticker, Averages.Avg "
+                    + "from (select S.Name, AP.Ticker, AVG(AP.Close) as Avg "
+                    + "from AdjustedPrices AP, Securities S "
+                    + "where AP.Ticker = S.Ticker "
+                    + "and YEAR(AP.Day) = 2016 "
+                    + "group by AP.Ticker) Averages "
+                    + "order by Averages.Avg desc "
+                    + "limit 10;");
+            
+            output.println("<p>");
+            output.println("<h2>General Analytical Data #4</h2>");
+            output.println("Top 10 stocks to watch in 2017 based on top 10 highest average closes of 2016.");
+            output.println("</p>");
+            
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>Name, Ticker, Avg</th>");
+            output.println("</tr>");
+            
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Name") + ", " + result.getString("Ticker") + ", " + result.getString("Avg"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+        } catch (SQLException e) {
+            System.out.println("Uh oh");
+        }
+        
+        // Fifth Query
+        try {
+            Statement s = conn.createStatement();
+
+            ResultSet result = s.executeQuery("select Percentages.Sector, CASE WHEN Percentages.Percentage < 0.0 THEN 'Tanking' "
+                    + "WHEN Percentages.Percentage >= 0.0 and Percentages.Percentage < 0.1 THEN 'Average' "
+                    + "WHEN Percentages.Percentage >= 0.1 and Percentages.Percentage < 0.2 THEN 'Above Average' "
+                    + "ELSE  'Significantly Outperforming' END AS Performance "
+                    + "from (select LastAvgs.Sector, (LastAvgs.AvgLastDayClose - FirstAvgs.AvgFirstDayClose) / FirstAvgs.AvgFirstDayClose as Percentage "
+                    + "from (select S.Sector, AVG(AP.Close) as AvgFirstDayClose "
+                    + "from AdjustedPrices AP, Securities S "
+                    + "where AP.Ticker = S.Ticker "
+                    + "and AP.Day = (select MIN(AP.Day) as FirstDay "
+                    + "from AdjustedPrices AP "
+                    + "where YEAR(AP.Day) = 2016) "
+                    + "and S.Sector <> 'Telecommunications Services' "
+                    + "group by S.Sector) FirstAvgs, "
+                    + "(select S.Sector, AVG(AP.Close) as AvgLastDayClose "
+                    + "from AdjustedPrices AP, Securities S "
+                    + "where AP.Ticker = S.Ticker "
+                    + "and AP.Day = (select MAX(AP.Day) as LastDay "
+                    + "from AdjustedPrices AP "
+                    + "where YEAR(AP.Day) = 2016) "
+                    + "and S.Sector <> 'Telecommunications Services' "
+                    + "group by S.Sector) LastAvgs "
+                    + "where FirstAvgs.Sector = LastAvgs.Sector) Percentages;");
+            
+            output.println("<p>");
+            output.println("<h2>General Analytical Data #5</h2>");
+            output.println("Performance of all sectors (excluding Telcommunication Services) in 2016. "
+                    + "The sector is considered 'Tanking' if its value of the difference in the average "
+                    + "close of the last day in 2016 and the average close of the first day in 2016, divided by the average "
+                    + "close of the first day is a negative value. If the value is in between 0 and less than 0.1, the "
+                    + "sector is considered 'Average'. If the value is in between 0.1 and less than 0.2, the sector is "
+                    + "considered 'Above Average'. If the value is greater than 0.2, the sector is considered as 'Significantly "
+                    + "Outperforming'. These ranges are based on estimates of different levels of how well the sector is "
+                    + "performing in 2016.");
+            output.println("</p>");
+            
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>Sector, Performance</th>");
+            output.println("</tr>");
+            
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Sector") + ", " + result.getString("Performance"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
             output.println("</table>");
         } catch (SQLException e) {
             System.out.println("Uh oh");
