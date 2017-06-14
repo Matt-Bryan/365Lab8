@@ -3,7 +3,6 @@
  * CPE 365 Lab 8
  * 
  */
-package pkg365lab8;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -1050,15 +1049,21 @@ public class Driver {
             e.printStackTrace();
         }
 
-        // Sixth Individual Query Part 1
+        output.println("<p>");
+        output.println("<h2>Individual Stock Data #6</h2>");
+        output.println("For each of the days above, examining the next three-to-six months of\n"
+            + "available data determine if your position was correct.");
+        output.println("</p>");
+
+        //Sixth Individual Query Part 1
         if (args[0].equals("FSLR")) {
-            fslrSixth();
+            fslrSixth(output, conn);
         } else if (args[0].equals("XOM")) {
-            xomSixth();
+            xomSixth(output, conn);
         } else if (args[0].equals("CB")) {
-            cbSixth();
+            cbSixth(output, conn);
         } else {
-            watSixth();
+            watSixth(output, conn);
         }
 
         // Seventh Individual Query Part 1
@@ -1333,18 +1338,18 @@ public class Driver {
         // Seventh Individual Query Part 6
         try {
             Statement s = conn.createStatement();
-            
+
             ResultSet result = s.executeQuery("select FSLR.Year, FSLR.AvgVolume, AMZN.AvgVolumeAMZN, FSLR.AvgVolume - AMZN.AvgVolumeAMZN as " + args[0] + "vsAMZNVolumes "
-            		+ "from (select YEAR(AP.Day) as Year, AVG(AP.Volume) as AvgVolume "
-            		+ "from AdjustedPrices AP "
-            		+ "where AP.Ticker = '" + args[0] + "' "
-            		+ "and YEAR(AP.Day) = 2016) FSLR, "
-            		+ "(select YEAR(AP.Day) as Year, AVG(AP.Volume) as AvgVolumeAMZN "
-            		+ "from AdjustedPrices AP "
-            		+ "where AP.Ticker = 'AMZN' "
-            		+ "and YEAR(AP.Day) = 2016) AMZN "
-            		+ "where FSLR.Year = AMZN.Year;");
-            
+                + "from (select YEAR(AP.Day) as Year, AVG(AP.Volume) as AvgVolume "
+                + "from AdjustedPrices AP "
+                + "where AP.Ticker = '" + args[0] + "' "
+                + "and YEAR(AP.Day) = 2016) FSLR, "
+                + "(select YEAR(AP.Day) as Year, AVG(AP.Volume) as AvgVolumeAMZN "
+                + "from AdjustedPrices AP "
+                + "where AP.Ticker = 'AMZN' "
+                + "and YEAR(AP.Day) = 2016) AMZN "
+                + "where FSLR.Year = AMZN.Year;");
+
             output.println("<table>");
             output.println("<tr>");
             output.println("<th align='left'>Year, AvgVolume, AvgVolumeAMZN, " + args[0] + "vsAMZNVolumes</th>");
@@ -1354,7 +1359,7 @@ public class Driver {
                 output.println("<tr>");
                 output.print("<td>");
                 output.print(result.getString("Year") + ", " + result.getString("AvgVolume") + ", " + result.getString("AvgVolumeAMZN")
-                + ", " + result.getString(args[0] + "vsAMZNVolumes"));
+                    + ", " + result.getString(args[0] + "vsAMZNVolumes"));
                 output.println("</td>");
                 output.println("</tr>");
             }
@@ -1433,16 +1438,16 @@ public class Driver {
         try {
             Statement s = conn.createStatement();
             ResultSet result = s.executeQuery("select FSLR.Year, FSLR.AvgVolume, ISRG.AvgVolumeISRG, FSLR.AvgVolume - ISRG.AvgVolumeISRG as " + args[0] + "vsISRGVolumes "
-            		+ "from (select YEAR(AP.Day) as Year, AVG(AP.Volume) as AvgVolume "
-            		+ "from AdjustedPrices AP "
-            		+ "where AP.Ticker = '" + args[0] + "' "
-            		+ "and YEAR(AP.Day) = 2016) FSLR, "
-            		+ "(select YEAR(AP.Day) as Year, AVG(AP.Volume) as AvgVolumeISRG "
-            		+ "from AdjustedPrices AP "
-            		+ "where AP.Ticker = 'ISRG' "
-            		+ "and YEAR(AP.Day) = 2016) ISRG "
-            		+ "where FSLR.Year = ISRG.Year;");
-            
+                + "from (select YEAR(AP.Day) as Year, AVG(AP.Volume) as AvgVolume "
+                + "from AdjustedPrices AP "
+                + "where AP.Ticker = '" + args[0] + "' "
+                + "and YEAR(AP.Day) = 2016) FSLR, "
+                + "(select YEAR(AP.Day) as Year, AVG(AP.Volume) as AvgVolumeISRG "
+                + "from AdjustedPrices AP "
+                + "where AP.Ticker = 'ISRG' "
+                + "and YEAR(AP.Day) = 2016) ISRG "
+                + "where FSLR.Year = ISRG.Year;");
+
             output.println("<table>");
             output.println("<tr>");
             output.println("<th align='left'>Year, AvgVolume, AvgVolumeISRG, " + args[0] + "vsISRGVolumes</th>");
@@ -1452,7 +1457,7 @@ public class Driver {
                 output.println("<tr>");
                 output.print("<td>");
                 output.print(result.getString("Year") + ", " + result.getString("AvgVolume") + ", " + result.getString("AvgVolumeISRG")
-                + ", " + result.getString(args[0] + "vsISRGVolumes"));
+                    + ", " + result.getString(args[0] + "vsISRGVolumes"));
                 output.println("</td>");
                 output.println("</tr>");
             }
@@ -1531,16 +1536,16 @@ public class Driver {
         try {
             Statement s = conn.createStatement();
             ResultSet result = s.executeQuery("select FSLR.Year, FSLR.AvgVolume, MLM.AvgVolumeMLM, FSLR.AvgVolume - MLM.AvgVolumeMLM as " + args[0] + "vsMLMVolumes "
-            		+ "from (select YEAR(AP.Day) as Year, AVG(AP.Volume) as AvgVolume "
-            		+ "from AdjustedPrices AP "
-            		+ "where AP.Ticker = '" + args[0] + "' "
-            		+ "and YEAR(AP.Day) = 2016) FSLR, "
-            		+ "(select YEAR(AP.Day) as Year, AVG(AP.Volume) as AvgVolumeMLM "
-            		+ "from AdjustedPrices AP "
-            		+ "where AP.Ticker = 'MLM' "
-            		+ "and YEAR(AP.Day) = 2016) MLM "
-            		+ "where FSLR.Year = MLM.Year;");
-            
+                + "from (select YEAR(AP.Day) as Year, AVG(AP.Volume) as AvgVolume "
+                + "from AdjustedPrices AP "
+                + "where AP.Ticker = '" + args[0] + "' "
+                + "and YEAR(AP.Day) = 2016) FSLR, "
+                + "(select YEAR(AP.Day) as Year, AVG(AP.Volume) as AvgVolumeMLM "
+                + "from AdjustedPrices AP "
+                + "where AP.Ticker = 'MLM' "
+                + "and YEAR(AP.Day) = 2016) MLM "
+                + "where FSLR.Year = MLM.Year;");
+
             output.println("<table>");
             output.println("<tr>");
             output.println("<th align='left'>Year, AvgVolume, AvgVolumeMLM, " + args[0] + "vsMLMVolumes</th>");
@@ -1550,17 +1555,17 @@ public class Driver {
                 output.println("<tr>");
                 output.print("<td>");
                 output.print(result.getString("Year") + ", " + result.getString("AvgVolume") + ", " + result.getString("AvgVolumeMLM")
-                + ", " + result.getString(args[0] + "vsMLMVolumes"));
+                    + ", " + result.getString(args[0] + "vsMLMVolumes"));
                 output.println("</td>");
                 output.println("</tr>");
             }
 
-            output.println("</table>"); 
+            output.println("</table>");
             output.println("</br>");
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        
+
         ArrayList<String> tickers = new ArrayList<String>();
         tickers.add("FSLR");
         tickers.add("XOM");
@@ -1568,60 +1573,60 @@ public class Driver {
         tickers.add("WAT");
         int i;
         for (i = 0; i < tickers.size(); i++) {
-        	if (tickers.get(i).equals(args[0])) {
-        		tickers.remove(args[0]);
-        	}
+            if (tickers.get(i).equals(args[0])) {
+                tickers.remove(args[0]);
+            }
         }
         // Eighth Individual Query Part 1
         try {
             Statement s = conn.createStatement();
             ResultSet result = s.executeQuery("select IF (AVG(Vals." + tickers.get(0) + ") > AVG(Vals." + args[0] + "), '" + tickers.get(0) + " > " + args[0] + "', '" + args[0] + " > " + tickers.get(0) + "') as Results "
-            		+ "from (select PricelineChanges.Month, PricelineChanges.AbsoluteChange as " + tickers.get(0) + ", SolarChanges.AbsoluteChange as " + args[0] + ", "
-            		+ "PricelineChanges.AbsoluteChange - SolarChanges.AbsoluteChange as " + tickers.get(0) + "vs" + args[0] + "PriceChange "
-            		+ "from (select MONTHNAME(SolarMaxCloses.Day) as Month, SolarMaxCloses.Ticker, SolarMaxCloses.Close - SolarMinCloses.Close as AbsoluteChange "
-            		+ "from (select AP.Ticker, MIN(AP.Day) as Min, AP.Close "
-            		+ "from AdjustedPrices AP "
-            		+ "where YEAR(AP.Day) = 2016 "
-            		+ "and AP.Ticker = '" + args[0] + "' "
-            		+ "group by MONTH(AP.Day)) SolarMinCloses, "
-            		+ "(select AP.Ticker, AP.Day, AP.Close "
-            		+ "from (select AP.Ticker, MAX(AP.Day) as Max "
-            		+ "from AdjustedPrices AP "
-            		+ "where YEAR(AP.Day) = 2016 "
-            		+ "and AP.Ticker = '" + args[0] + "' "
-            		+ "group by MONTH(AP.Day)) MaxDates, AdjustedPrices AP "
-            		+ "where AP.Ticker = MaxDates.Ticker "
-            		+ "and MaxDates.Max = AP.Day "
-            		+ "group by MONTH(AP.Day)) SolarMaxCloses "
-            		+ "where SolarMaxCloses.Ticker = SolarMinCloses.Ticker "
-            		+ "and MONTH(SolarMaxCloses.Day) = MONTH(SolarMinCloses.Min) "
-            		+ "group by MONTH(SolarMaxCloses.Day)) SolarChanges, "
-            		+ "(select MONTHNAME(PricelineMaxCloses.Day) as Month, PricelineMaxCloses.Ticker, PricelineMaxCloses.Close - PricelineMinCloses.Close as AbsoluteChange  "
-            		+ "from (select AP.Ticker, MIN(AP.Day) as Min, AP.Close "
-            		+ "from AdjustedPrices AP "
-            		+ "where YEAR(AP.Day) = 2016 "
-            		+ "and AP.Ticker = '" + tickers.get(0) + "' "
-            		+ "group by MONTH(AP.Day)) PricelineMinCloses, "
-            		+ "(select AP.Ticker, AP.Day, AP.Close "
-            		+ "from (select AP.Ticker, MAX(AP.Day) as Max "
-            		+ "from AdjustedPrices AP "
-            		+ "where YEAR(AP.Day) = 2016 "
-            		+ "and AP.Ticker = '" + tickers.get(0) + "' "
-            		+ "group by MONTH(AP.Day)) MaxDates, AdjustedPrices AP "
-            		+ "where AP.Ticker = MaxDates.Ticker "
-            		+ "and MaxDates.Max = AP.Day "
-            		+ "group by MONTH(AP.Day)) PricelineMaxCloses "
-            		+ "where PricelineMaxCloses.Ticker = PricelineMinCloses.Ticker "
-            		+ "and MONTH(PricelineMaxCloses.Day) = MONTH(PricelineMinCloses.Min) "
-            		+ "group by MONTH(PricelineMaxCloses.Day)) PricelineChanges "
-            		+ "where PricelineChanges.Month = SolarChanges.Month) Vals;");
-            
+                + "from (select PricelineChanges.Month, PricelineChanges.AbsoluteChange as " + tickers.get(0) + ", SolarChanges.AbsoluteChange as " + args[0] + ", "
+                + "PricelineChanges.AbsoluteChange - SolarChanges.AbsoluteChange as " + tickers.get(0) + "vs" + args[0] + "PriceChange "
+                + "from (select MONTHNAME(SolarMaxCloses.Day) as Month, SolarMaxCloses.Ticker, SolarMaxCloses.Close - SolarMinCloses.Close as AbsoluteChange "
+                + "from (select AP.Ticker, MIN(AP.Day) as Min, AP.Close "
+                + "from AdjustedPrices AP "
+                + "where YEAR(AP.Day) = 2016 "
+                + "and AP.Ticker = '" + args[0] + "' "
+                + "group by MONTH(AP.Day)) SolarMinCloses, "
+                + "(select AP.Ticker, AP.Day, AP.Close "
+                + "from (select AP.Ticker, MAX(AP.Day) as Max "
+                + "from AdjustedPrices AP "
+                + "where YEAR(AP.Day) = 2016 "
+                + "and AP.Ticker = '" + args[0] + "' "
+                + "group by MONTH(AP.Day)) MaxDates, AdjustedPrices AP "
+                + "where AP.Ticker = MaxDates.Ticker "
+                + "and MaxDates.Max = AP.Day "
+                + "group by MONTH(AP.Day)) SolarMaxCloses "
+                + "where SolarMaxCloses.Ticker = SolarMinCloses.Ticker "
+                + "and MONTH(SolarMaxCloses.Day) = MONTH(SolarMinCloses.Min) "
+                + "group by MONTH(SolarMaxCloses.Day)) SolarChanges, "
+                + "(select MONTHNAME(PricelineMaxCloses.Day) as Month, PricelineMaxCloses.Ticker, PricelineMaxCloses.Close - PricelineMinCloses.Close as AbsoluteChange  "
+                + "from (select AP.Ticker, MIN(AP.Day) as Min, AP.Close "
+                + "from AdjustedPrices AP "
+                + "where YEAR(AP.Day) = 2016 "
+                + "and AP.Ticker = '" + tickers.get(0) + "' "
+                + "group by MONTH(AP.Day)) PricelineMinCloses, "
+                + "(select AP.Ticker, AP.Day, AP.Close "
+                + "from (select AP.Ticker, MAX(AP.Day) as Max "
+                + "from AdjustedPrices AP "
+                + "where YEAR(AP.Day) = 2016 "
+                + "and AP.Ticker = '" + tickers.get(0) + "' "
+                + "group by MONTH(AP.Day)) MaxDates, AdjustedPrices AP "
+                + "where AP.Ticker = MaxDates.Ticker "
+                + "and MaxDates.Max = AP.Day "
+                + "group by MONTH(AP.Day)) PricelineMaxCloses "
+                + "where PricelineMaxCloses.Ticker = PricelineMinCloses.Ticker "
+                + "and MONTH(PricelineMaxCloses.Day) = MONTH(PricelineMinCloses.Min) "
+                + "group by MONTH(PricelineMaxCloses.Day)) PricelineChanges "
+                + "where PricelineChanges.Month = SolarChanges.Month) Vals;");
+
             output.println("<p>");
             output.println("<h2>Individual Stock Data #8</h2>");
             output.println("Compare your stock with other stocks assigned to your team (CB, WAT, FSLR, XOM). "
-            		+ "Determine which of the stocks is performing better throughout 2016. We decided that the better"
-            		+ " performing stock was the one with the higher average absolute change over each month in 2016. If "
-            		+ "the average absolute change over each month in 2016 is greater than the other stock, it is the better performing stock of the two.");
+                + "Determine which of the stocks is performing better throughout 2016. We decided that the better"
+                + " performing stock was the one with the higher average absolute change over each month in 2016. If "
+                + "the average absolute change over each month in 2016 is greater than the other stock, it is the better performing stock of the two.");
             output.println("</p>");
 
             output.println("<table>");
@@ -1647,46 +1652,46 @@ public class Driver {
         try {
             Statement s = conn.createStatement();
             ResultSet result = s.executeQuery("select IF (AVG(Vals." + tickers.get(1) + ") > AVG(Vals." + args[0] + "), '" + tickers.get(1) + " > " + args[0] + "', '" + args[0] + " > " + tickers.get(1) + "') as Results "
-            		+ "from (select PricelineChanges.Month, PricelineChanges.AbsoluteChange as " + tickers.get(1) + ", SolarChanges.AbsoluteChange as " + args[0] + ", "
-            		+ "PricelineChanges.AbsoluteChange - SolarChanges.AbsoluteChange as " + tickers.get(1) + "vs" + args[0] + "PriceChange "
-            		+ "from (select MONTHNAME(SolarMaxCloses.Day) as Month, SolarMaxCloses.Ticker, SolarMaxCloses.Close - SolarMinCloses.Close as AbsoluteChange "
-            		+ "from (select AP.Ticker, MIN(AP.Day) as Min, AP.Close "
-            		+ "from AdjustedPrices AP "
-            		+ "where YEAR(AP.Day) = 2016 "
-            		+ "and AP.Ticker = '" + args[0] + "' "
-            		+ "group by MONTH(AP.Day)) SolarMinCloses, "
-            		+ "(select AP.Ticker, AP.Day, AP.Close "
-            		+ "from (select AP.Ticker, MAX(AP.Day) as Max "
-            		+ "from AdjustedPrices AP "
-            		+ "where YEAR(AP.Day) = 2016 "
-            		+ "and AP.Ticker = '" + args[0] + "' "
-            		+ "group by MONTH(AP.Day)) MaxDates, AdjustedPrices AP "
-            		+ "where AP.Ticker = MaxDates.Ticker "
-            		+ "and MaxDates.Max = AP.Day "
-            		+ "group by MONTH(AP.Day)) SolarMaxCloses "
-            		+ "where SolarMaxCloses.Ticker = SolarMinCloses.Ticker "
-            		+ "and MONTH(SolarMaxCloses.Day) = MONTH(SolarMinCloses.Min) "
-            		+ "group by MONTH(SolarMaxCloses.Day)) SolarChanges, "
-            		+ "(select MONTHNAME(PricelineMaxCloses.Day) as Month, PricelineMaxCloses.Ticker, PricelineMaxCloses.Close - PricelineMinCloses.Close as AbsoluteChange  "
-            		+ "from (select AP.Ticker, MIN(AP.Day) as Min, AP.Close "
-            		+ "from AdjustedPrices AP "
-            		+ "where YEAR(AP.Day) = 2016 "
-            		+ "and AP.Ticker = '" + tickers.get(1) + "' "
-            		+ "group by MONTH(AP.Day)) PricelineMinCloses, "
-            		+ "(select AP.Ticker, AP.Day, AP.Close "
-            		+ "from (select AP.Ticker, MAX(AP.Day) as Max "
-            		+ "from AdjustedPrices AP "
-            		+ "where YEAR(AP.Day) = 2016 "
-            		+ "and AP.Ticker = '" + tickers.get(1) + "' "
-            		+ "group by MONTH(AP.Day)) MaxDates, AdjustedPrices AP "
-            		+ "where AP.Ticker = MaxDates.Ticker "
-            		+ "and MaxDates.Max = AP.Day "
-            		+ "group by MONTH(AP.Day)) PricelineMaxCloses "
-            		+ "where PricelineMaxCloses.Ticker = PricelineMinCloses.Ticker "
-            		+ "and MONTH(PricelineMaxCloses.Day) = MONTH(PricelineMinCloses.Min) "
-            		+ "group by MONTH(PricelineMaxCloses.Day)) PricelineChanges "
-            		+ "where PricelineChanges.Month = SolarChanges.Month) Vals;");
-            
+                + "from (select PricelineChanges.Month, PricelineChanges.AbsoluteChange as " + tickers.get(1) + ", SolarChanges.AbsoluteChange as " + args[0] + ", "
+                + "PricelineChanges.AbsoluteChange - SolarChanges.AbsoluteChange as " + tickers.get(1) + "vs" + args[0] + "PriceChange "
+                + "from (select MONTHNAME(SolarMaxCloses.Day) as Month, SolarMaxCloses.Ticker, SolarMaxCloses.Close - SolarMinCloses.Close as AbsoluteChange "
+                + "from (select AP.Ticker, MIN(AP.Day) as Min, AP.Close "
+                + "from AdjustedPrices AP "
+                + "where YEAR(AP.Day) = 2016 "
+                + "and AP.Ticker = '" + args[0] + "' "
+                + "group by MONTH(AP.Day)) SolarMinCloses, "
+                + "(select AP.Ticker, AP.Day, AP.Close "
+                + "from (select AP.Ticker, MAX(AP.Day) as Max "
+                + "from AdjustedPrices AP "
+                + "where YEAR(AP.Day) = 2016 "
+                + "and AP.Ticker = '" + args[0] + "' "
+                + "group by MONTH(AP.Day)) MaxDates, AdjustedPrices AP "
+                + "where AP.Ticker = MaxDates.Ticker "
+                + "and MaxDates.Max = AP.Day "
+                + "group by MONTH(AP.Day)) SolarMaxCloses "
+                + "where SolarMaxCloses.Ticker = SolarMinCloses.Ticker "
+                + "and MONTH(SolarMaxCloses.Day) = MONTH(SolarMinCloses.Min) "
+                + "group by MONTH(SolarMaxCloses.Day)) SolarChanges, "
+                + "(select MONTHNAME(PricelineMaxCloses.Day) as Month, PricelineMaxCloses.Ticker, PricelineMaxCloses.Close - PricelineMinCloses.Close as AbsoluteChange  "
+                + "from (select AP.Ticker, MIN(AP.Day) as Min, AP.Close "
+                + "from AdjustedPrices AP "
+                + "where YEAR(AP.Day) = 2016 "
+                + "and AP.Ticker = '" + tickers.get(1) + "' "
+                + "group by MONTH(AP.Day)) PricelineMinCloses, "
+                + "(select AP.Ticker, AP.Day, AP.Close "
+                + "from (select AP.Ticker, MAX(AP.Day) as Max "
+                + "from AdjustedPrices AP "
+                + "where YEAR(AP.Day) = 2016 "
+                + "and AP.Ticker = '" + tickers.get(1) + "' "
+                + "group by MONTH(AP.Day)) MaxDates, AdjustedPrices AP "
+                + "where AP.Ticker = MaxDates.Ticker "
+                + "and MaxDates.Max = AP.Day "
+                + "group by MONTH(AP.Day)) PricelineMaxCloses "
+                + "where PricelineMaxCloses.Ticker = PricelineMinCloses.Ticker "
+                + "and MONTH(PricelineMaxCloses.Day) = MONTH(PricelineMinCloses.Min) "
+                + "group by MONTH(PricelineMaxCloses.Day)) PricelineChanges "
+                + "where PricelineChanges.Month = SolarChanges.Month) Vals;");
+
             output.println("<table>");
             output.println("<tr>");
             output.println("<th align='left'>Results</th>");
@@ -1710,46 +1715,46 @@ public class Driver {
         try {
             Statement s = conn.createStatement();
             ResultSet result = s.executeQuery("select IF (AVG(Vals." + tickers.get(2) + ") > AVG(Vals." + args[0] + "), '" + tickers.get(2) + " > " + args[0] + "', '" + args[0] + " > " + tickers.get(2) + "') as Results "
-            		+ "from (select PricelineChanges.Month, PricelineChanges.AbsoluteChange as " + tickers.get(2) + ", SolarChanges.AbsoluteChange as " + args[0] + ", "
-            		+ "PricelineChanges.AbsoluteChange - SolarChanges.AbsoluteChange as " + tickers.get(2) + "vs" + args[0] + "PriceChange "
-            		+ "from (select MONTHNAME(SolarMaxCloses.Day) as Month, SolarMaxCloses.Ticker, SolarMaxCloses.Close - SolarMinCloses.Close as AbsoluteChange "
-            		+ "from (select AP.Ticker, MIN(AP.Day) as Min, AP.Close "
-            		+ "from AdjustedPrices AP "
-            		+ "where YEAR(AP.Day) = 2016 "
-            		+ "and AP.Ticker = '" + args[0] + "' "
-            		+ "group by MONTH(AP.Day)) SolarMinCloses, "
-            		+ "(select AP.Ticker, AP.Day, AP.Close "
-            		+ "from (select AP.Ticker, MAX(AP.Day) as Max "
-            		+ "from AdjustedPrices AP "
-            		+ "where YEAR(AP.Day) = 2016 "
-            		+ "and AP.Ticker = '" + args[0] + "' "
-            		+ "group by MONTH(AP.Day)) MaxDates, AdjustedPrices AP "
-            		+ "where AP.Ticker = MaxDates.Ticker "
-            		+ "and MaxDates.Max = AP.Day "
-            		+ "group by MONTH(AP.Day)) SolarMaxCloses "
-            		+ "where SolarMaxCloses.Ticker = SolarMinCloses.Ticker "
-            		+ "and MONTH(SolarMaxCloses.Day) = MONTH(SolarMinCloses.Min) "
-            		+ "group by MONTH(SolarMaxCloses.Day)) SolarChanges, "
-            		+ "(select MONTHNAME(PricelineMaxCloses.Day) as Month, PricelineMaxCloses.Ticker, PricelineMaxCloses.Close - PricelineMinCloses.Close as AbsoluteChange  "
-            		+ "from (select AP.Ticker, MIN(AP.Day) as Min, AP.Close "
-            		+ "from AdjustedPrices AP "
-            		+ "where YEAR(AP.Day) = 2016 "
-            		+ "and AP.Ticker = '" + tickers.get(2) + "' "
-            		+ "group by MONTH(AP.Day)) PricelineMinCloses, "
-            		+ "(select AP.Ticker, AP.Day, AP.Close "
-            		+ "from (select AP.Ticker, MAX(AP.Day) as Max "
-            		+ "from AdjustedPrices AP "
-            		+ "where YEAR(AP.Day) = 2016 "
-            		+ "and AP.Ticker = '" + tickers.get(2) + "' "
-            		+ "group by MONTH(AP.Day)) MaxDates, AdjustedPrices AP "
-            		+ "where AP.Ticker = MaxDates.Ticker "
-            		+ "and MaxDates.Max = AP.Day "
-            		+ "group by MONTH(AP.Day)) PricelineMaxCloses "
-            		+ "where PricelineMaxCloses.Ticker = PricelineMinCloses.Ticker "
-            		+ "and MONTH(PricelineMaxCloses.Day) = MONTH(PricelineMinCloses.Min) "
-            		+ "group by MONTH(PricelineMaxCloses.Day)) PricelineChanges "
-            		+ "where PricelineChanges.Month = SolarChanges.Month) Vals;");
-            
+                + "from (select PricelineChanges.Month, PricelineChanges.AbsoluteChange as " + tickers.get(2) + ", SolarChanges.AbsoluteChange as " + args[0] + ", "
+                + "PricelineChanges.AbsoluteChange - SolarChanges.AbsoluteChange as " + tickers.get(2) + "vs" + args[0] + "PriceChange "
+                + "from (select MONTHNAME(SolarMaxCloses.Day) as Month, SolarMaxCloses.Ticker, SolarMaxCloses.Close - SolarMinCloses.Close as AbsoluteChange "
+                + "from (select AP.Ticker, MIN(AP.Day) as Min, AP.Close "
+                + "from AdjustedPrices AP "
+                + "where YEAR(AP.Day) = 2016 "
+                + "and AP.Ticker = '" + args[0] + "' "
+                + "group by MONTH(AP.Day)) SolarMinCloses, "
+                + "(select AP.Ticker, AP.Day, AP.Close "
+                + "from (select AP.Ticker, MAX(AP.Day) as Max "
+                + "from AdjustedPrices AP "
+                + "where YEAR(AP.Day) = 2016 "
+                + "and AP.Ticker = '" + args[0] + "' "
+                + "group by MONTH(AP.Day)) MaxDates, AdjustedPrices AP "
+                + "where AP.Ticker = MaxDates.Ticker "
+                + "and MaxDates.Max = AP.Day "
+                + "group by MONTH(AP.Day)) SolarMaxCloses "
+                + "where SolarMaxCloses.Ticker = SolarMinCloses.Ticker "
+                + "and MONTH(SolarMaxCloses.Day) = MONTH(SolarMinCloses.Min) "
+                + "group by MONTH(SolarMaxCloses.Day)) SolarChanges, "
+                + "(select MONTHNAME(PricelineMaxCloses.Day) as Month, PricelineMaxCloses.Ticker, PricelineMaxCloses.Close - PricelineMinCloses.Close as AbsoluteChange  "
+                + "from (select AP.Ticker, MIN(AP.Day) as Min, AP.Close "
+                + "from AdjustedPrices AP "
+                + "where YEAR(AP.Day) = 2016 "
+                + "and AP.Ticker = '" + tickers.get(2) + "' "
+                + "group by MONTH(AP.Day)) PricelineMinCloses, "
+                + "(select AP.Ticker, AP.Day, AP.Close "
+                + "from (select AP.Ticker, MAX(AP.Day) as Max "
+                + "from AdjustedPrices AP "
+                + "where YEAR(AP.Day) = 2016 "
+                + "and AP.Ticker = '" + tickers.get(2) + "' "
+                + "group by MONTH(AP.Day)) MaxDates, AdjustedPrices AP "
+                + "where AP.Ticker = MaxDates.Ticker "
+                + "and MaxDates.Max = AP.Day "
+                + "group by MONTH(AP.Day)) PricelineMaxCloses "
+                + "where PricelineMaxCloses.Ticker = PricelineMinCloses.Ticker "
+                + "and MONTH(PricelineMaxCloses.Day) = MONTH(PricelineMinCloses.Min) "
+                + "group by MONTH(PricelineMaxCloses.Day)) PricelineChanges "
+                + "where PricelineChanges.Month = SolarChanges.Month) Vals;");
+
             output.println("<table>");
             output.println("<tr>");
             output.println("<th align='left'>Results</th>");
@@ -1775,19 +1780,807 @@ public class Driver {
         output.flush();
     }
 
-    private static void fslrSixth() {
-        ;
+    private static void fslrSixth(PrintWriter output, Connection conn) {
+        try {
+            Statement s = conn.createStatement();
+            ResultSet result = s.executeQuery("select CASE\n"
+                + "WHEN Close > (\n"
+                + "select Open + Open * 0.15\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Ticker = 'FSLR'\n"
+                + "and AP.Day = '2015-01-01'\n"
+                + ") THEN 'Buy was correct'\n"
+                + "ELSE 'Buy was incorrect'\n"
+                + "END as Judgement\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Day = '2015-06-01'\n"
+                + "and AP.Ticker = 'FSLR';");
+
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>Judgement</th>");
+            output.println("</tr>");
+
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Judgement"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+            output.println("</br>");
+
+            result = s.executeQuery("select CASE\n"
+                + "WHEN Close < (\n"
+                + "select Open + Open * 0.15\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Ticker = 'FSLR'\n"
+                + "and AP.Day = '2015-06-01'\n"
+                + ")\n"
+                + "AND\n"
+                + "Close > (\n"
+                + "select Open - Open * 0.15\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Ticker = 'FSLR'\n"
+                + "and AP.Day = '2015-06-01'\n"
+                + ")\n"
+                + "THEN 'Hold was correct'\n"
+                + "ELSE 'Hold was incorrect'\n"
+                + "END as Judgement\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Day = '2015-10-02'\n"
+                + "and AP.Ticker = 'FSLR';");
+
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>Judgement</th>");
+            output.println("</tr>");
+
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Judgement"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+            output.println("</br>");
+
+            result = s.executeQuery("select CASE\n"
+                + "WHEN Close > (\n"
+                + "select Open + Open * 0.15\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Ticker = 'FSLR'\n"
+                + "and AP.Day = '2015-10-02'\n"
+                + ") THEN 'Buy was correct'\n"
+                + "ELSE 'Buy was incorrect'\n"
+                + "END as Judgement\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Day = '2016-01-04'\n"
+                + "and AP.Ticker = 'FSLR';");
+
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>Judgement</th>");
+            output.println("</tr>");
+
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Judgement"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+            output.println("</br>");
+
+            result = s.executeQuery("select CASE\n"
+                + "WHEN Close < (\n"
+                + "select Open - Open * 0.15\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Ticker = 'FSLR'\n"
+                + "and AP.Day = '2016-01-04'\n"
+                + ") THEN 'Sell was correct'\n"
+                + "ELSE 'Sell was incorrect'\n"
+                + "END as Judgement\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Day = '2016-05-02'\n"
+                + "and AP.Ticker = 'FSLR';");
+
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>Judgement</th>");
+            output.println("</tr>");
+
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Judgement"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+            output.println("</br>");
+
+            result = s.executeQuery("select CASE\n"
+                + "WHEN Close > (\n"
+                + "select Open + Open * 0.15\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Ticker = 'FSLR'\n"
+                + "and AP.Day = '2016-05-02'\n"
+                + ") THEN 'Buy was correct'\n"
+                + "ELSE 'Buy was incorrect'\n"
+                + "END as Judgement\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Day = '2016-10-03'\n"
+                + "and AP.Ticker = 'FSLR';");
+
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>Judgement</th>");
+            output.println("</tr>");
+
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Judgement"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+            output.println("</br>");
+
+            result = s.executeQuery("select CASE\n"
+                + "WHEN Close < (\n"
+                + "select Open + Open * 0.15\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Ticker = 'FSLR'\n"
+                + "and AP.Day = '2016-10-03'\n"
+                + ")\n"
+                + "AND\n"
+                + "Close > (\n"
+                + "select Open - Open * 0.15\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Ticker = 'FSLR'\n"
+                + "and AP.Day = '2016-10-03'\n"
+                + ")\n"
+                + "THEN 'Hold was correct'\n"
+                + "ELSE 'Hold was incorrect'\n"
+                + "END as Judgement\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Day = '2016-12-30'\n"
+                + "and AP.Ticker = 'FSLR';");
+
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>Judgement</th>");
+            output.println("</tr>");
+
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Judgement"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+            output.println("</br>");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    private static void xomSixth() {
-        ;
+    private static void xomSixth(PrintWriter output, Connection conn) {
+        try {
+            Statement s = conn.createStatement();
+            ResultSet result = s.executeQuery("select CASE\n"
+                + "WHEN Close < (\n"
+                + "select Open + Open * 0.15\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Ticker = 'XOM'\n"
+                + "and AP.Day = '2015-01-01'\n"
+                + ")\n"
+                + "AND\n"
+                + "Close > (\n"
+                + "select Open - Open * 0.15\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Ticker = 'XOM'\n"
+                + "and AP.Day = '2015-01-01'\n"
+                + ")\n"
+                + "THEN 'Hold was correct'\n"
+                + "ELSE 'Hold was incorrect'\n"
+                + "END as Judgement\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Day = '2015-06-01'\n"
+                + "and AP.Ticker = 'XOM';");
+
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>Judgement</th>");
+            output.println("</tr>");
+
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Judgement"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+            output.println("</br>");
+
+            result = s.executeQuery("select CASE\n"
+                + "WHEN Close > (\n"
+                + "select Open + Open * 0.15\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Ticker = 'XOM'\n"
+                + "and AP.Day = '2015-06-01'\n"
+                + ") THEN 'Buy was correct'\n"
+                + "ELSE 'Buy was incorrect'\n"
+                + "END as Judgement\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Day = '2015-10-02'\n"
+                + "and AP.Ticker = 'XOM';");
+
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>Judgement</th>");
+            output.println("</tr>");
+
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Judgement"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+            output.println("</br>");
+
+            result = s.executeQuery("select CASE\n"
+                + "WHEN Close < (\n"
+                + "select Open + Open * 0.15\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Ticker = 'XOM'\n"
+                + "and AP.Day = '2015-10-02'\n"
+                + ")\n"
+                + "AND\n"
+                + "Close > (\n"
+                + "select Open - Open * 0.15\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Ticker = 'XOM'\n"
+                + "and AP.Day = '2015-10-02'\n"
+                + ")\n"
+                + "THEN 'Hold was correct'\n"
+                + "ELSE 'Hold was incorrect'\n"
+                + "END as Judgement\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Day = '2016-01-04'\n"
+                + "and AP.Ticker = 'XOM';");
+
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>Judgement</th>");
+            output.println("</tr>");
+
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Judgement"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+            output.println("</br>");
+
+            result = s.executeQuery("select CASE\n"
+                + "WHEN Close < (\n"
+                + "select Open + Open * 0.15\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Ticker = 'XOM'\n"
+                + "and AP.Day = '2016-01-04'\n"
+                + ")\n"
+                + "AND\n"
+                + "Close > (\n"
+                + "select Open - Open * 0.15\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Ticker = 'XOM'\n"
+                + "and AP.Day = '2016-01-04'\n"
+                + ")\n"
+                + "THEN 'Hold was correct'\n"
+                + "ELSE 'Hold was incorrect'\n"
+                + "END as Judgement\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Day = '2016-05-02'\n"
+                + "and AP.Ticker = 'XOM';");
+
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>Judgement</th>");
+            output.println("</tr>");
+
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Judgement"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+            output.println("</br>");
+
+            result = s.executeQuery("select CASE\n"
+                + "WHEN Close < (\n"
+                + "select Open - Open * 0.15\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Ticker = 'XOM'\n"
+                + "and AP.Day = '2016-05-02'\n"
+                + ") THEN 'Sell was correct'\n"
+                + "ELSE 'Sell was incorrect'\n"
+                + "END as Judgement\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Day = '2016-10-03'\n"
+                + "and AP.Ticker = 'XOM';");
+
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>Judgement</th>");
+            output.println("</tr>");
+
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Judgement"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+            output.println("</br>");
+
+            result = s.executeQuery("select CASE\n"
+                + "WHEN Close < (\n"
+                + "select Open + Open * 0.15\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Ticker = 'XOM'\n"
+                + "and AP.Day = '2016-10-03'\n"
+                + ")\n"
+                + "AND\n"
+                + "Close > (\n"
+                + "select Open - Open * 0.15\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Ticker = 'XOM'\n"
+                + "and AP.Day = '2016-10-03'\n"
+                + ")\n"
+                + "THEN 'Hold was correct'\n"
+                + "ELSE 'Hold was incorrect'\n"
+                + "END as Judgement\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Day = '2016-12-30'\n"
+                + "and AP.Ticker = 'XOM';");
+
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>Judgement</th>");
+            output.println("</tr>");
+
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Judgement"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+            output.println("</br>");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    private static void cbSixth() {
-        ;
+    private static void cbSixth(PrintWriter output, Connection conn) {
+        try {
+            Statement s = conn.createStatement();
+            ResultSet result = s.executeQuery("select CASE\n"
+                + "WHEN Close < (\n"
+                + "select Open - Open * 0.15\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Ticker = 'CB'\n"
+                + "and AP.Day = '2015-01-01'\n"
+                + ") THEN 'Sell was correct'\n"
+                + "ELSE 'Sell was incorrect'\n"
+                + "END as Judgement\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Day = '2015-06-01'\n"
+                + "and AP.Ticker = 'CB';");
+
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>Judgement</th>");
+            output.println("</tr>");
+
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Judgement"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+            output.println("</br>");
+
+            result = s.executeQuery("select CASE\n"
+                + "WHEN Close > (\n"
+                + "select Open + Open * 0.15\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Ticker = 'CB'\n"
+                + "and AP.Day = '2015-06-01'\n"
+                + ") THEN 'Buy was correct'\n"
+                + "ELSE 'Buy was incorrect'\n"
+                + "END as Judgement\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Day = '2015-10-02'\n"
+                + "and AP.Ticker = 'CB';");
+
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>Judgement</th>");
+            output.println("</tr>");
+
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Judgement"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+            output.println("</br>");
+
+            result = s.executeQuery("select CASE\n"
+                + "WHEN Close < (\n"
+                + "select Open + Open * 0.15\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Ticker = 'CB'\n"
+                + "and AP.Day = '2015-10-02'\n"
+                + ")\n"
+                + "AND\n"
+                + "Close > (\n"
+                + "select Open - Open * 0.15\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Ticker = 'CB'\n"
+                + "and AP.Day = '2015-10-02'\n"
+                + ")\n"
+                + "THEN 'Hold was correct'\n"
+                + "ELSE 'Hold was incorrect'\n"
+                + "END as Judgement\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Day = '2016-01-04'\n"
+                + "and AP.Ticker = 'CB';");
+
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>Judgement</th>");
+            output.println("</tr>");
+
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Judgement"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+            output.println("</br>");
+
+            result = s.executeQuery("select CASE\n"
+                + "WHEN Close < (\n"
+                + "select Open - Open * 0.15\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Ticker = 'CB'\n"
+                + "and AP.Day = '2016-01-04'\n"
+                + ") THEN 'Sell was correct'\n"
+                + "ELSE 'Sell was incorrect'\n"
+                + "END as Judgement\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Day = '2016-05-02'\n"
+                + "and AP.Ticker = 'CB';");
+
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>Judgement</th>");
+            output.println("</tr>");
+
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Judgement"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+            output.println("</br>");
+
+            result = s.executeQuery("select CASE\n"
+                + "WHEN Close < (\n"
+                + "select Open + Open * 0.15\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Ticker = 'CB'\n"
+                + "and AP.Day = '2016-05-02'\n"
+                + ")\n"
+                + "AND\n"
+                + "Close > (\n"
+                + "select Open - Open * 0.15\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Ticker = 'CB'\n"
+                + "and AP.Day = '2016-05-02'\n"
+                + ")\n"
+                + "THEN 'Hold was correct'\n"
+                + "ELSE 'Hold was incorrect'\n"
+                + "END as Judgement\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Day = '2016-10-03'\n"
+                + "and AP.Ticker = 'CB';");
+
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>Judgement</th>");
+            output.println("</tr>");
+
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Judgement"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+            output.println("</br>");
+
+            result = s.executeQuery("select CASE\n"
+                + "WHEN Close < (\n"
+                + "select Open + Open * 0.15\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Ticker = 'CB'\n"
+                + "and AP.Day = '2016-10-03'\n"
+                + ")\n"
+                + "AND\n"
+                + "Close > (\n"
+                + "select Open - Open * 0.15\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Ticker = 'CB'\n"
+                + "and AP.Day = '2016-10-03'\n"
+                + ")\n"
+                + "THEN 'Hold was correct'\n"
+                + "ELSE 'Hold was incorrect'\n"
+                + "END as Judgement\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Day = '2016-12-30'\n"
+                + "and AP.Ticker = 'CB';");
+
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>Judgement</th>");
+            output.println("</tr>");
+
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Judgement"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+            output.println("</br>");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
-    private static void watSixth() {
-        ;
+    private static void watSixth(PrintWriter output, Connection conn) {
+        try {
+            Statement s = conn.createStatement();
+            ResultSet result = s.executeQuery("select CASE\n"
+                + "WHEN Close < (\n"
+                + "select Open - Open * 0.15\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Ticker = 'WAT'\n"
+                + "and AP.Day = '2015-01-01'\n"
+                + ") THEN 'Sell was correct'\n"
+                + "ELSE 'Sell was incorrect'\n"
+                + "END as Judgement\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Day = '2015-06-01'\n"
+                + "and AP.Ticker = 'WAT';");
+
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>Judgement</th>");
+            output.println("</tr>");
+
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Judgement"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+            output.println("</br>");
+
+            result = s.executeQuery("select CASE\n"
+                + "WHEN Close < (\n"
+                + "select Open - Open * 0.15\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Ticker = 'WAT'\n"
+                + "and AP.Day = '2015-06-01'\n"
+                + ") THEN 'Sell was correct'\n"
+                + "ELSE 'Sell was incorrect'\n"
+                + "END as Judgement\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Day = '2015-10-02'\n"
+                + "and AP.Ticker = 'WAT';");
+
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>Judgement</th>");
+            output.println("</tr>");
+
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Judgement"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+            output.println("</br>");
+
+            result = s.executeQuery("select CASE\n"
+                + "WHEN Close > (\n"
+                + "select Open + Open * 0.15\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Ticker = 'WAT'\n"
+                + "and AP.Day = '2015-10-02'\n"
+                + ") THEN 'Buy was correct'\n"
+                + "ELSE 'Buy was incorrect'\n"
+                + "END as Judgement\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Day = '2016-01-04'\n"
+                + "and AP.Ticker = 'WAT';");
+
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>Judgement</th>");
+            output.println("</tr>");
+
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Judgement"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+            output.println("</br>");
+
+            result = s.executeQuery("select CASE\n"
+                + "WHEN Close < (\n"
+                + "select Open - Open * 0.15\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Ticker = 'WAT'\n"
+                + "and AP.Day = '2016-01-04'\n"
+                + ") THEN 'Sell was correct'\n"
+                + "ELSE 'Sell was incorrect'\n"
+                + "END as Judgement\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Day = '2016-05-02'\n"
+                + "and AP.Ticker = 'WAT';");
+
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>Judgement</th>");
+            output.println("</tr>");
+
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Judgement"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+            output.println("</br>");
+
+            result = s.executeQuery("select CASE\n"
+                + "WHEN Close < (\n"
+                + "select Open + Open * 0.15\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Ticker = 'WAT'\n"
+                + "and AP.Day = '2016-05-02'\n"
+                + ")\n"
+                + "AND\n"
+                + "Close > (\n"
+                + "select Open - Open * 0.15\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Ticker = 'WAT'\n"
+                + "and AP.Day = '2016-05-02'\n"
+                + ")\n"
+                + "THEN 'Hold was correct'\n"
+                + "ELSE 'Hold was incorrect'\n"
+                + "END as Judgement\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Day = '2016-10-03'\n"
+                + "and AP.Ticker = 'WAT';");
+
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>Judgement</th>");
+            output.println("</tr>");
+
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Judgement"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+            output.println("</br>");
+
+            result = s.executeQuery("select CASE\n"
+                + "WHEN Close < (\n"
+                + "select Open - Open * 0.15\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Ticker = 'WAT'\n"
+                + "and AP.Day = '2016-10-03'\n"
+                + ") THEN 'Sell was correct'\n"
+                + "ELSE 'Sell was incorrect'\n"
+                + "END as Judgement\n"
+                + "from AdjustedPrices AP\n"
+                + "where AP.Day = '2016-12-30'\n"
+                + "and AP.Ticker = 'WAT';");
+
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>Judgement</th>");
+            output.println("</tr>");
+
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Judgement"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+            output.println("</br>");
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }
