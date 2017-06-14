@@ -719,6 +719,7 @@ public class Driver {
             		+ "group by MONTH(Day);");
             
             output.println("<p>");
+            output.println("<h2>Individual Stock Data #3</h2>");
             output.println("For 2016, show the average closing price, the highest and the lowest price, and the average "
             		+ "daily trading volume by month.");
             output.println("</p>");
@@ -733,6 +734,52 @@ public class Driver {
                 output.print("<td>");
                 output.print(result.getString("Month") + ", " + result.getString("AvgClose") + ", " + result.getString("HighestPrice")
                 + ", " + result.getString("LowestPrice") + ", " + result.getString("AvgVolume"));
+                output.println("</td>");
+                output.println("</tr>");
+            }
+
+            output.println("</table>");
+        } catch (SQLException e) {
+            System.out.println("Uh oh");
+        }
+        
+        // Fourth Individual Query
+        try {
+            Statement s = conn.createStatement();
+
+            ResultSet result = s.executeQuery("select Year, Month "
+            		+ "from (select T3.Year as Year, MONTHNAME(STR_TO_DATE(T3.Month, '%m')) as Month, MaxChange "
+            		+ "from (select Year, MAX(AvgChange) as MaxChange "
+            		+ "from (select YEAR(Day) as Year, MONTH(Day) as Month, (MAX(High) - MIN(Low)) as AvgChange "
+            		+ "from AdjustedPrices AP "
+            		+ "where Ticker = 'CB' "
+            		+ "group by Year, Month) T1 "
+            		+ "group by Year) T2, "
+            		+ "(select YEAR(Day) as Year, MONTH(Day) as Month, (MAX(High) - MIN(Low)) as AvgChange "
+            		+ "from AdjustedPrices AP "
+            		+ "where Ticker = 'CB' "
+            		+ "group by Year, Month) T3 "
+            		+ "where T2.Year = T3.Year "
+            		+ "and T2.MaxChange = T3.AvgChange "
+            		+ "group by T3.Year, T3.Month "
+            		+ ") T4;");
+            
+            output.println("<p>");
+            output.println("<h2>Individual Stock Data #4</h2>");
+            output.println("Determine the month of best performance for each of the years. We determined the best performance"
+            		+ " by subtracting the maximum high of the stock by the minimum low of the stock and getting the maximum"
+            		+ " difference to get the stock that increased the most within each month.");
+            output.println("</p>");
+            
+            output.println("<table>");
+            output.println("<tr>");
+            output.println("<th align='left'>Year, Month</th>");
+            output.println("</tr>");
+            
+            while (result.next()) {
+                output.println("<tr>");
+                output.print("<td>");
+                output.print(result.getString("Year") + ", " + result.getString("Month"));
                 output.println("</td>");
                 output.println("</tr>");
             }

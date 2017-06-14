@@ -9,25 +9,21 @@ group by MONTH(Day);
 
 -- Q4
 select Year, Month
-from (
-select T3.Year as Year, MONTHNAME(STR_TO_DATE(T3.Month, '%m')) as Month, MaxChange
+from (select T3.Year as Year, MONTHNAME(STR_TO_DATE(T3.Month, '%m')) as Month, MaxChange
 from (select Year, MAX(AvgChange) as MaxChange
-		from (
-				select YEAR(Day) as Year, MONTH(Day) as Month, (MAX(High) - MIN(Low)) as AvgChange
-				from AdjustedPrices AP
-				where Ticker = 'CB'
-				group by Year, Month
-				) T1
-		group by Year) T2,
-		(select YEAR(Day) as Year, MONTH(Day) as Month, (MAX(High) - MIN(Low)) as AvgChange
-		from AdjustedPrices AP
-		where Ticker = 'CB'
-		group by Year, Month) T3
+from (select YEAR(Day) as Year, MONTH(Day) as Month, (MAX(High) - MIN(Low)) as AvgChange
+from AdjustedPrices AP
+where Ticker = 'CB'
+group by Year, Month) T1
+group by Year) T2,
+(select YEAR(Day) as Year, MONTH(Day) as Month, (MAX(High) - MIN(Low)) as AvgChange
+from AdjustedPrices AP
+where Ticker = 'CB'
+group by Year, Month) T3
 where T2.Year = T3.Year
 and T2.MaxChange = T3.AvgChange
 group by T3.Year, T3.Month
-		) T4
-;
+) T4;
 
 -- Q5
 
