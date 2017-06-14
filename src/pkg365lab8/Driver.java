@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.sql.*;
-import java.util.Scanner;
+import java.util.*;
 
 public class Driver {
 
@@ -1333,28 +1333,28 @@ public class Driver {
         // Seventh Individual Query Part 6
         try {
             Statement s = conn.createStatement();
-
-            ResultSet result = s.executeQuery("select FSLR.Year, FSLR.AvgVolume" + args[0] + ", AMZN.AvgVolumeAMZN, FSLR.AvgVolumeFSLR - AMZN.AvgVolumeAMZN as " + args[0] + "vsAMZNVolumes "
-                + "from (select YEAR(AP.Day) as Year, AVG(AP.Volume) as AvgVolumeFSLR "
-                + "from AdjustedPrices AP "
-                + "where AP.Ticker = '" + args[0] + "' "
-                + "and YEAR(AP.Day) = 2016) FSLR, "
-                + "(select YEAR(AP.Day) as Year, AVG(AP.Volume) as AvgVolumeAMZN "
-                + "from AdjustedPrices AP "
-                + "where AP.Ticker = 'AMZN' "
-                + "and YEAR(AP.Day) = 2016) AMZN "
-                + "where FSLR.Year = AMZN.Year;");
-
+            
+            ResultSet result = s.executeQuery("select FSLR.Year, FSLR.AvgVolume, AMZN.AvgVolumeAMZN, FSLR.AvgVolume - AMZN.AvgVolumeAMZN as " + args[0] + "vsAMZNVolumes "
+            		+ "from (select YEAR(AP.Day) as Year, AVG(AP.Volume) as AvgVolume "
+            		+ "from AdjustedPrices AP "
+            		+ "where AP.Ticker = '" + args[0] + "' "
+            		+ "and YEAR(AP.Day) = 2016) FSLR, "
+            		+ "(select YEAR(AP.Day) as Year, AVG(AP.Volume) as AvgVolumeAMZN "
+            		+ "from AdjustedPrices AP "
+            		+ "where AP.Ticker = 'AMZN' "
+            		+ "and YEAR(AP.Day) = 2016) AMZN "
+            		+ "where FSLR.Year = AMZN.Year;");
+            
             output.println("<table>");
             output.println("<tr>");
-            output.println("<th align='left'>Year, AvgVolume" + args[0] + ", AvgVolumeAMZN, " + args[0] + "vsAMZNVolumes</th>");
+            output.println("<th align='left'>Year, AvgVolume, AvgVolumeAMZN, " + args[0] + "vsAMZNVolumes</th>");
             output.println("</tr>");
 
             while (result.next()) {
                 output.println("<tr>");
                 output.print("<td>");
-                output.print(result.getString("Year") + ", " + result.getString("AvgVolume" + args[0]) + ", " + result.getString("AvgVolumeAMZN")
-                    + ", " + result.getString(args[0] + "vsAMZNVolumes"));
+                output.print(result.getString("Year") + ", " + result.getString("AvgVolume") + ", " + result.getString("AvgVolumeAMZN")
+                + ", " + result.getString(args[0] + "vsAMZNVolumes"));
                 output.println("</td>");
                 output.println("</tr>");
             }
@@ -1432,28 +1432,27 @@ public class Driver {
         // Seventh Individual Query Part 8
         try {
             Statement s = conn.createStatement();
-
-            ResultSet result = s.executeQuery("select FSLR.Year, FSLR.AvgVolume" + args[0] + ", ISRG.AvgVolumeISRG, FSLR.AvgVolumeFSLR - ISRG.AvgVolumeISRG as " + args[0] + "vsISRGVolumes "
-                + "from (select YEAR(AP.Day) as Year, AVG(AP.Volume) as AvgVolumeFSLR "
-                + "from AdjustedPrices AP "
-                + "where AP.Ticker = '" + args[0] + "' "
-                + "and YEAR(AP.Day) = 2016) FSLR, "
-                + "(select YEAR(AP.Day) as Year, AVG(AP.Volume) as AvgVolumeISRG "
-                + "from AdjustedPrices AP "
-                + "where AP.Ticker = 'ISRG' "
-                + "and YEAR(AP.Day) = 2016) ISRG "
-                + "where FSLR.Year = ISRG.Year;");
-
+            ResultSet result = s.executeQuery("select FSLR.Year, FSLR.AvgVolume, ISRG.AvgVolumeISRG, FSLR.AvgVolume - ISRG.AvgVolumeISRG as " + args[0] + "vsISRGVolumes "
+            		+ "from (select YEAR(AP.Day) as Year, AVG(AP.Volume) as AvgVolume "
+            		+ "from AdjustedPrices AP "
+            		+ "where AP.Ticker = '" + args[0] + "' "
+            		+ "and YEAR(AP.Day) = 2016) FSLR, "
+            		+ "(select YEAR(AP.Day) as Year, AVG(AP.Volume) as AvgVolumeISRG "
+            		+ "from AdjustedPrices AP "
+            		+ "where AP.Ticker = 'ISRG' "
+            		+ "and YEAR(AP.Day) = 2016) ISRG "
+            		+ "where FSLR.Year = ISRG.Year;");
+            
             output.println("<table>");
             output.println("<tr>");
-            output.println("<th align='left'>Year, AvgVolume" + args[0] + ", AvgVolumeISRG, " + args[0] + "vsISRGVolumes</th>");
+            output.println("<th align='left'>Year, AvgVolume, AvgVolumeISRG, " + args[0] + "vsISRGVolumes</th>");
             output.println("</tr>");
 
             while (result.next()) {
                 output.println("<tr>");
                 output.print("<td>");
-                output.print(result.getString("Year") + ", " + result.getString("AvgVolume" + args[0]) + ", " + result.getString("AvgVolumeISRG")
-                    + ", " + result.getString(args[0] + "vsISRGVolumes"));
+                output.print(result.getString("Year") + ", " + result.getString("AvgVolume") + ", " + result.getString("AvgVolumeISRG")
+                + ", " + result.getString(args[0] + "vsISRGVolumes"));
                 output.println("</td>");
                 output.println("</tr>");
             }
@@ -1531,89 +1530,98 @@ public class Driver {
         // Seventh Individual Query Part 10
         try {
             Statement s = conn.createStatement();
-
-            ResultSet result = s.executeQuery("select FSLR.Year, FSLR.AvgVolume" + args[0] + ", MLM.AvgVolumeMLM, FSLR.AvgVolumeFSLR - MLM.AvgVolumeMLM as " + args[0] + "vsMLMVolumes "
-                + "from (select YEAR(AP.Day) as Year, AVG(AP.Volume) as AvgVolumeFSLR "
-                + "from AdjustedPrices AP "
-                + "where AP.Ticker = '" + args[0] + "' "
-                + "and YEAR(AP.Day) = 2016) FSLR, "
-                + "(select YEAR(AP.Day) as Year, AVG(AP.Volume) as AvgVolumeMLM "
-                + "from AdjustedPrices AP "
-                + "where AP.Ticker = 'MLM' "
-                + "and YEAR(AP.Day) = 2016) MLM "
-                + "where FSLR.Year = MLM.Year;");
-
+            ResultSet result = s.executeQuery("select FSLR.Year, FSLR.AvgVolume, MLM.AvgVolumeMLM, FSLR.AvgVolume - MLM.AvgVolumeMLM as " + args[0] + "vsMLMVolumes "
+            		+ "from (select YEAR(AP.Day) as Year, AVG(AP.Volume) as AvgVolume "
+            		+ "from AdjustedPrices AP "
+            		+ "where AP.Ticker = '" + args[0] + "' "
+            		+ "and YEAR(AP.Day) = 2016) FSLR, "
+            		+ "(select YEAR(AP.Day) as Year, AVG(AP.Volume) as AvgVolumeMLM "
+            		+ "from AdjustedPrices AP "
+            		+ "where AP.Ticker = 'MLM' "
+            		+ "and YEAR(AP.Day) = 2016) MLM "
+            		+ "where FSLR.Year = MLM.Year;");
+            
             output.println("<table>");
             output.println("<tr>");
-            output.println("<th align='left'>Year, AvgVolume" + args[0] + ", AvgVolumeMLM, " + args[0] + "vsMLMVolumes</th>");
+            output.println("<th align='left'>Year, AvgVolume, AvgVolumeMLM, " + args[0] + "vsMLMVolumes</th>");
             output.println("</tr>");
 
             while (result.next()) {
                 output.println("<tr>");
                 output.print("<td>");
-                output.print(result.getString("Year") + ", " + result.getString("AvgVolume" + args[0]) + ", " + result.getString("AvgVolumeMLM")
-                    + ", " + result.getString(args[0] + "vsMLMVolumes"));
+                output.print(result.getString("Year") + ", " + result.getString("AvgVolume") + ", " + result.getString("AvgVolumeMLM")
+                + ", " + result.getString(args[0] + "vsMLMVolumes"));
                 output.println("</td>");
                 output.println("</tr>");
             }
 
-            output.println("</table>");
+            output.println("</table>"); 
             output.println("</br>");
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+        
+        ArrayList<String> tickers = new ArrayList<String>();
+        tickers.add("FSLR");
+        tickers.add("XOM");
+        tickers.add("CB");
+        tickers.add("WAT");
+        int i;
+        for (i = 0; i < tickers.size(); i++) {
+        	if (tickers.get(i).equals(args[0])) {
+        		tickers.remove(args[0]);
+        	}
+        }
         // Eighth Individual Query Part 1
         try {
             Statement s = conn.createStatement();
-
-            ResultSet result = s.executeQuery("select IF (AVG(Vals.CB) > AVG(Vals.FSLR), 'CB > FSLR', 'FSLR > CB') as Results "
-                + "from (select PricelineChanges.Month, PricelineChanges.AbsoluteChange as CB, SolarChanges.AbsoluteChange as FSLR, "
-                + "PricelineChanges.AbsoluteChange - SolarChanges.AbsoluteChange as CBvsFSLRPriceChange "
-                + "from (select MONTHNAME(SolarMaxCloses.Day) as Month, SolarMaxCloses.Ticker, SolarMaxCloses.Close - SolarMinCloses.Close as AbsoluteChange "
-                + "from (select AP.Ticker, MIN(AP.Day) as Min, AP.Close "
-                + "from AdjustedPrices AP "
-                + "where YEAR(AP.Day) = 2016 "
-                + "and AP.Ticker = 'FSLR' "
-                + "group by MONTH(AP.Day)) SolarMinCloses, "
-                + "(select AP.Ticker, AP.Day, AP.Close "
-                + "from (select AP.Ticker, MAX(AP.Day) as Max "
-                + "from AdjustedPrices AP "
-                + "where YEAR(AP.Day) = 2016 "
-                + "and AP.Ticker = 'FSLR' "
-                + "group by MONTH(AP.Day)) MaxDates, AdjustedPrices AP "
-                + "where AP.Ticker = MaxDates.Ticker "
-                + "and MaxDates.Max = AP.Day "
-                + "group by MONTH(AP.Day)) SolarMaxCloses "
-                + "where SolarMaxCloses.Ticker = SolarMinCloses.Ticker "
-                + "and MONTH(SolarMaxCloses.Day) = MONTH(SolarMinCloses.Min) "
-                + "group by MONTH(SolarMaxCloses.Day)) SolarChanges, "
-                + "(select MONTHNAME(PricelineMaxCloses.Day) as Month, PricelineMaxCloses.Ticker, PricelineMaxCloses.Close - PricelineMinCloses.Close as AbsoluteChange  "
-                + "from (select AP.Ticker, MIN(AP.Day) as Min, AP.Close "
-                + "from AdjustedPrices AP "
-                + "where YEAR(AP.Day) = 2016 "
-                + "and AP.Ticker = 'CB' "
-                + "group by MONTH(AP.Day)) PricelineMinCloses, "
-                + "(select AP.Ticker, AP.Day, AP.Close "
-                + "from (select AP.Ticker, MAX(AP.Day) as Max "
-                + "from AdjustedPrices AP "
-                + "where YEAR(AP.Day) = 2016 "
-                + "and AP.Ticker = 'CB' "
-                + "group by MONTH(AP.Day)) MaxDates, AdjustedPrices AP "
-                + "where AP.Ticker = MaxDates.Ticker "
-                + "and MaxDates.Max = AP.Day "
-                + "group by MONTH(AP.Day)) PricelineMaxCloses "
-                + "where PricelineMaxCloses.Ticker = PricelineMinCloses.Ticker "
-                + "and MONTH(PricelineMaxCloses.Day) = MONTH(PricelineMinCloses.Min) "
-                + "group by MONTH(PricelineMaxCloses.Day)) PricelineChanges "
-                + "where PricelineChanges.Month = SolarChanges.Month) Vals;");
-
+            ResultSet result = s.executeQuery("select IF (AVG(Vals." + tickers.get(0) + ") > AVG(Vals." + args[0] + "), '" + tickers.get(0) + " > " + args[0] + "', '" + args[0] + " > " + tickers.get(0) + "') as Results "
+            		+ "from (select PricelineChanges.Month, PricelineChanges.AbsoluteChange as " + tickers.get(0) + ", SolarChanges.AbsoluteChange as " + args[0] + ", "
+            		+ "PricelineChanges.AbsoluteChange - SolarChanges.AbsoluteChange as " + tickers.get(0) + "vs" + args[0] + "PriceChange "
+            		+ "from (select MONTHNAME(SolarMaxCloses.Day) as Month, SolarMaxCloses.Ticker, SolarMaxCloses.Close - SolarMinCloses.Close as AbsoluteChange "
+            		+ "from (select AP.Ticker, MIN(AP.Day) as Min, AP.Close "
+            		+ "from AdjustedPrices AP "
+            		+ "where YEAR(AP.Day) = 2016 "
+            		+ "and AP.Ticker = '" + args[0] + "' "
+            		+ "group by MONTH(AP.Day)) SolarMinCloses, "
+            		+ "(select AP.Ticker, AP.Day, AP.Close "
+            		+ "from (select AP.Ticker, MAX(AP.Day) as Max "
+            		+ "from AdjustedPrices AP "
+            		+ "where YEAR(AP.Day) = 2016 "
+            		+ "and AP.Ticker = '" + args[0] + "' "
+            		+ "group by MONTH(AP.Day)) MaxDates, AdjustedPrices AP "
+            		+ "where AP.Ticker = MaxDates.Ticker "
+            		+ "and MaxDates.Max = AP.Day "
+            		+ "group by MONTH(AP.Day)) SolarMaxCloses "
+            		+ "where SolarMaxCloses.Ticker = SolarMinCloses.Ticker "
+            		+ "and MONTH(SolarMaxCloses.Day) = MONTH(SolarMinCloses.Min) "
+            		+ "group by MONTH(SolarMaxCloses.Day)) SolarChanges, "
+            		+ "(select MONTHNAME(PricelineMaxCloses.Day) as Month, PricelineMaxCloses.Ticker, PricelineMaxCloses.Close - PricelineMinCloses.Close as AbsoluteChange  "
+            		+ "from (select AP.Ticker, MIN(AP.Day) as Min, AP.Close "
+            		+ "from AdjustedPrices AP "
+            		+ "where YEAR(AP.Day) = 2016 "
+            		+ "and AP.Ticker = '" + tickers.get(0) + "' "
+            		+ "group by MONTH(AP.Day)) PricelineMinCloses, "
+            		+ "(select AP.Ticker, AP.Day, AP.Close "
+            		+ "from (select AP.Ticker, MAX(AP.Day) as Max "
+            		+ "from AdjustedPrices AP "
+            		+ "where YEAR(AP.Day) = 2016 "
+            		+ "and AP.Ticker = '" + tickers.get(0) + "' "
+            		+ "group by MONTH(AP.Day)) MaxDates, AdjustedPrices AP "
+            		+ "where AP.Ticker = MaxDates.Ticker "
+            		+ "and MaxDates.Max = AP.Day "
+            		+ "group by MONTH(AP.Day)) PricelineMaxCloses "
+            		+ "where PricelineMaxCloses.Ticker = PricelineMinCloses.Ticker "
+            		+ "and MONTH(PricelineMaxCloses.Day) = MONTH(PricelineMinCloses.Min) "
+            		+ "group by MONTH(PricelineMaxCloses.Day)) PricelineChanges "
+            		+ "where PricelineChanges.Month = SolarChanges.Month) Vals;");
+            
             output.println("<p>");
             output.println("<h2>Individual Stock Data #8</h2>");
             output.println("Compare your stock with other stocks assigned to your team (CB, WAT, FSLR, XOM). "
-                + "Determine which of the stocks is performing better throughout 2016. We decided that the better"
-                + " performing stock was the one with the higher average absolute change over each month in 2016. If "
-                + "the stock output is greater than the other stock, it is the better performing stock of the two.");
+            		+ "Determine which of the stocks is performing better throughout 2016. We decided that the better"
+            		+ " performing stock was the one with the higher average absolute change over each month in 2016. If "
+            		+ "the average absolute change over each month in 2016 is greater than the other stock, it is the better performing stock of the two.");
             output.println("</p>");
 
             output.println("<table>");
@@ -1638,48 +1646,47 @@ public class Driver {
         // Eighth Individual Query Part 2
         try {
             Statement s = conn.createStatement();
-
-            ResultSet result = s.executeQuery("select IF (AVG(Vals.WAT) > AVG(Vals.FSLR), 'WAT > FSLR', 'FSLR > WAT') as Results "
-                + "from (select PricelineChanges.Month, PricelineChanges.AbsoluteChange as WAT, SolarChanges.AbsoluteChange as FSLR, "
-                + "PricelineChanges.AbsoluteChange - SolarChanges.AbsoluteChange as WATvsFSLRPriceChange "
-                + "from (select MONTHNAME(SolarMaxCloses.Day) as Month, SolarMaxCloses.Ticker, SolarMaxCloses.Close - SolarMinCloses.Close as AbsoluteChange "
-                + "from (select AP.Ticker, MIN(AP.Day) as Min, AP.Close "
-                + "from AdjustedPrices AP "
-                + "where YEAR(AP.Day) = 2016 "
-                + "and AP.Ticker = 'FSLR' "
-                + "group by MONTH(AP.Day)) SolarMinCloses, "
-                + "(select AP.Ticker, AP.Day, AP.Close "
-                + "from (select AP.Ticker, MAX(AP.Day) as Max "
-                + "from AdjustedPrices AP "
-                + "where YEAR(AP.Day) = 2016 "
-                + "and AP.Ticker = 'FSLR' "
-                + "group by MONTH(AP.Day)) MaxDates, AdjustedPrices AP "
-                + "where AP.Ticker = MaxDates.Ticker "
-                + "and MaxDates.Max = AP.Day "
-                + "group by MONTH(AP.Day)) SolarMaxCloses "
-                + "where SolarMaxCloses.Ticker = SolarMinCloses.Ticker "
-                + "and MONTH(SolarMaxCloses.Day) = MONTH(SolarMinCloses.Min) "
-                + "group by MONTH(SolarMaxCloses.Day)) SolarChanges, "
-                + "(select MONTHNAME(PricelineMaxCloses.Day) as Month, PricelineMaxCloses.Ticker, PricelineMaxCloses.Close - PricelineMinCloses.Close as AbsoluteChange  "
-                + "from (select AP.Ticker, MIN(AP.Day) as Min, AP.Close "
-                + "from AdjustedPrices AP "
-                + "where YEAR(AP.Day) = 2016 "
-                + "and AP.Ticker = 'WAT' "
-                + "group by MONTH(AP.Day)) PricelineMinCloses, "
-                + "(select AP.Ticker, AP.Day, AP.Close "
-                + "from (select AP.Ticker, MAX(AP.Day) as Max "
-                + "from AdjustedPrices AP "
-                + "where YEAR(AP.Day) = 2016 "
-                + "and AP.Ticker = 'WAT' "
-                + "group by MONTH(AP.Day)) MaxDates, AdjustedPrices AP "
-                + "where AP.Ticker = MaxDates.Ticker "
-                + "and MaxDates.Max = AP.Day "
-                + "group by MONTH(AP.Day)) PricelineMaxCloses "
-                + "where PricelineMaxCloses.Ticker = PricelineMinCloses.Ticker "
-                + "and MONTH(PricelineMaxCloses.Day) = MONTH(PricelineMinCloses.Min) "
-                + "group by MONTH(PricelineMaxCloses.Day)) PricelineChanges "
-                + "where PricelineChanges.Month = SolarChanges.Month) Vals;");
-
+            ResultSet result = s.executeQuery("select IF (AVG(Vals." + tickers.get(1) + ") > AVG(Vals." + args[0] + "), '" + tickers.get(1) + " > " + args[0] + "', '" + args[0] + " > " + tickers.get(1) + "') as Results "
+            		+ "from (select PricelineChanges.Month, PricelineChanges.AbsoluteChange as " + tickers.get(1) + ", SolarChanges.AbsoluteChange as " + args[0] + ", "
+            		+ "PricelineChanges.AbsoluteChange - SolarChanges.AbsoluteChange as " + tickers.get(1) + "vs" + args[0] + "PriceChange "
+            		+ "from (select MONTHNAME(SolarMaxCloses.Day) as Month, SolarMaxCloses.Ticker, SolarMaxCloses.Close - SolarMinCloses.Close as AbsoluteChange "
+            		+ "from (select AP.Ticker, MIN(AP.Day) as Min, AP.Close "
+            		+ "from AdjustedPrices AP "
+            		+ "where YEAR(AP.Day) = 2016 "
+            		+ "and AP.Ticker = '" + args[0] + "' "
+            		+ "group by MONTH(AP.Day)) SolarMinCloses, "
+            		+ "(select AP.Ticker, AP.Day, AP.Close "
+            		+ "from (select AP.Ticker, MAX(AP.Day) as Max "
+            		+ "from AdjustedPrices AP "
+            		+ "where YEAR(AP.Day) = 2016 "
+            		+ "and AP.Ticker = '" + args[0] + "' "
+            		+ "group by MONTH(AP.Day)) MaxDates, AdjustedPrices AP "
+            		+ "where AP.Ticker = MaxDates.Ticker "
+            		+ "and MaxDates.Max = AP.Day "
+            		+ "group by MONTH(AP.Day)) SolarMaxCloses "
+            		+ "where SolarMaxCloses.Ticker = SolarMinCloses.Ticker "
+            		+ "and MONTH(SolarMaxCloses.Day) = MONTH(SolarMinCloses.Min) "
+            		+ "group by MONTH(SolarMaxCloses.Day)) SolarChanges, "
+            		+ "(select MONTHNAME(PricelineMaxCloses.Day) as Month, PricelineMaxCloses.Ticker, PricelineMaxCloses.Close - PricelineMinCloses.Close as AbsoluteChange  "
+            		+ "from (select AP.Ticker, MIN(AP.Day) as Min, AP.Close "
+            		+ "from AdjustedPrices AP "
+            		+ "where YEAR(AP.Day) = 2016 "
+            		+ "and AP.Ticker = '" + tickers.get(1) + "' "
+            		+ "group by MONTH(AP.Day)) PricelineMinCloses, "
+            		+ "(select AP.Ticker, AP.Day, AP.Close "
+            		+ "from (select AP.Ticker, MAX(AP.Day) as Max "
+            		+ "from AdjustedPrices AP "
+            		+ "where YEAR(AP.Day) = 2016 "
+            		+ "and AP.Ticker = '" + tickers.get(1) + "' "
+            		+ "group by MONTH(AP.Day)) MaxDates, AdjustedPrices AP "
+            		+ "where AP.Ticker = MaxDates.Ticker "
+            		+ "and MaxDates.Max = AP.Day "
+            		+ "group by MONTH(AP.Day)) PricelineMaxCloses "
+            		+ "where PricelineMaxCloses.Ticker = PricelineMinCloses.Ticker "
+            		+ "and MONTH(PricelineMaxCloses.Day) = MONTH(PricelineMinCloses.Min) "
+            		+ "group by MONTH(PricelineMaxCloses.Day)) PricelineChanges "
+            		+ "where PricelineChanges.Month = SolarChanges.Month) Vals;");
+            
             output.println("<table>");
             output.println("<tr>");
             output.println("<th align='left'>Results</th>");
@@ -1702,48 +1709,47 @@ public class Driver {
         // Eighth Individual Query Part 3
         try {
             Statement s = conn.createStatement();
-
-            ResultSet result = s.executeQuery("select IF (AVG(Vals.XOM) > AVG(Vals.FSLR), 'XOM > FSLR', 'FSLR > XOM') as Results "
-                + "from (select PricelineChanges.Month, PricelineChanges.AbsoluteChange as XOM, SolarChanges.AbsoluteChange as FSLR, "
-                + "PricelineChanges.AbsoluteChange - SolarChanges.AbsoluteChange as XOMvsFSLRPriceChange "
-                + "from (select MONTHNAME(SolarMaxCloses.Day) as Month, SolarMaxCloses.Ticker, SolarMaxCloses.Close - SolarMinCloses.Close as AbsoluteChange "
-                + "from (select AP.Ticker, MIN(AP.Day) as Min, AP.Close "
-                + "from AdjustedPrices AP "
-                + "where YEAR(AP.Day) = 2016 "
-                + "and AP.Ticker = 'FSLR' "
-                + "group by MONTH(AP.Day)) SolarMinCloses, "
-                + "(select AP.Ticker, AP.Day, AP.Close "
-                + "from (select AP.Ticker, MAX(AP.Day) as Max "
-                + "from AdjustedPrices AP "
-                + "where YEAR(AP.Day) = 2016 "
-                + "and AP.Ticker = 'FSLR' "
-                + "group by MONTH(AP.Day)) MaxDates, AdjustedPrices AP "
-                + "where AP.Ticker = MaxDates.Ticker "
-                + "and MaxDates.Max = AP.Day "
-                + "group by MONTH(AP.Day)) SolarMaxCloses "
-                + "where SolarMaxCloses.Ticker = SolarMinCloses.Ticker "
-                + "and MONTH(SolarMaxCloses.Day) = MONTH(SolarMinCloses.Min) "
-                + "group by MONTH(SolarMaxCloses.Day)) SolarChanges, "
-                + "(select MONTHNAME(PricelineMaxCloses.Day) as Month, PricelineMaxCloses.Ticker, PricelineMaxCloses.Close - PricelineMinCloses.Close as AbsoluteChange  "
-                + "from (select AP.Ticker, MIN(AP.Day) as Min, AP.Close "
-                + "from AdjustedPrices AP "
-                + "where YEAR(AP.Day) = 2016 "
-                + "and AP.Ticker = 'XOM' "
-                + "group by MONTH(AP.Day)) PricelineMinCloses, "
-                + "(select AP.Ticker, AP.Day, AP.Close "
-                + "from (select AP.Ticker, MAX(AP.Day) as Max "
-                + "from AdjustedPrices AP "
-                + "where YEAR(AP.Day) = 2016 "
-                + "and AP.Ticker = 'XOM' "
-                + "group by MONTH(AP.Day)) MaxDates, AdjustedPrices AP "
-                + "where AP.Ticker = MaxDates.Ticker "
-                + "and MaxDates.Max = AP.Day "
-                + "group by MONTH(AP.Day)) PricelineMaxCloses "
-                + "where PricelineMaxCloses.Ticker = PricelineMinCloses.Ticker "
-                + "and MONTH(PricelineMaxCloses.Day) = MONTH(PricelineMinCloses.Min) "
-                + "group by MONTH(PricelineMaxCloses.Day)) PricelineChanges "
-                + "where PricelineChanges.Month = SolarChanges.Month) Vals;");
-
+            ResultSet result = s.executeQuery("select IF (AVG(Vals." + tickers.get(2) + ") > AVG(Vals." + args[0] + "), '" + tickers.get(2) + " > " + args[0] + "', '" + args[0] + " > " + tickers.get(2) + "') as Results "
+            		+ "from (select PricelineChanges.Month, PricelineChanges.AbsoluteChange as " + tickers.get(2) + ", SolarChanges.AbsoluteChange as " + args[0] + ", "
+            		+ "PricelineChanges.AbsoluteChange - SolarChanges.AbsoluteChange as " + tickers.get(2) + "vs" + args[0] + "PriceChange "
+            		+ "from (select MONTHNAME(SolarMaxCloses.Day) as Month, SolarMaxCloses.Ticker, SolarMaxCloses.Close - SolarMinCloses.Close as AbsoluteChange "
+            		+ "from (select AP.Ticker, MIN(AP.Day) as Min, AP.Close "
+            		+ "from AdjustedPrices AP "
+            		+ "where YEAR(AP.Day) = 2016 "
+            		+ "and AP.Ticker = '" + args[0] + "' "
+            		+ "group by MONTH(AP.Day)) SolarMinCloses, "
+            		+ "(select AP.Ticker, AP.Day, AP.Close "
+            		+ "from (select AP.Ticker, MAX(AP.Day) as Max "
+            		+ "from AdjustedPrices AP "
+            		+ "where YEAR(AP.Day) = 2016 "
+            		+ "and AP.Ticker = '" + args[0] + "' "
+            		+ "group by MONTH(AP.Day)) MaxDates, AdjustedPrices AP "
+            		+ "where AP.Ticker = MaxDates.Ticker "
+            		+ "and MaxDates.Max = AP.Day "
+            		+ "group by MONTH(AP.Day)) SolarMaxCloses "
+            		+ "where SolarMaxCloses.Ticker = SolarMinCloses.Ticker "
+            		+ "and MONTH(SolarMaxCloses.Day) = MONTH(SolarMinCloses.Min) "
+            		+ "group by MONTH(SolarMaxCloses.Day)) SolarChanges, "
+            		+ "(select MONTHNAME(PricelineMaxCloses.Day) as Month, PricelineMaxCloses.Ticker, PricelineMaxCloses.Close - PricelineMinCloses.Close as AbsoluteChange  "
+            		+ "from (select AP.Ticker, MIN(AP.Day) as Min, AP.Close "
+            		+ "from AdjustedPrices AP "
+            		+ "where YEAR(AP.Day) = 2016 "
+            		+ "and AP.Ticker = '" + tickers.get(2) + "' "
+            		+ "group by MONTH(AP.Day)) PricelineMinCloses, "
+            		+ "(select AP.Ticker, AP.Day, AP.Close "
+            		+ "from (select AP.Ticker, MAX(AP.Day) as Max "
+            		+ "from AdjustedPrices AP "
+            		+ "where YEAR(AP.Day) = 2016 "
+            		+ "and AP.Ticker = '" + tickers.get(2) + "' "
+            		+ "group by MONTH(AP.Day)) MaxDates, AdjustedPrices AP "
+            		+ "where AP.Ticker = MaxDates.Ticker "
+            		+ "and MaxDates.Max = AP.Day "
+            		+ "group by MONTH(AP.Day)) PricelineMaxCloses "
+            		+ "where PricelineMaxCloses.Ticker = PricelineMinCloses.Ticker "
+            		+ "and MONTH(PricelineMaxCloses.Day) = MONTH(PricelineMinCloses.Min) "
+            		+ "group by MONTH(PricelineMaxCloses.Day)) PricelineChanges "
+            		+ "where PricelineChanges.Month = SolarChanges.Month) Vals;");
+            
             output.println("<table>");
             output.println("<tr>");
             output.println("<th align='left'>Results</th>");
