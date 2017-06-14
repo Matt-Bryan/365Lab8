@@ -171,11 +171,11 @@ and AP.Ticker = 'CB';
 
 select CASE
 WHEN Close < (
-					select Open - Open * 0.15
-					from AdjustedPrices AP
-					where AP.Ticker = 'CB'
-					and AP.Day = '2015-01-01'
-				 ) THEN 'Sell was correct'
+select Open - Open * 0.15
+from AdjustedPrices AP
+where AP.Ticker = 'CB'
+and AP.Day = '2015-01-01'
+) THEN 'Sell was correct'
 ELSE 'Sell was incorrect'
 END as Judgement
 from AdjustedPrices AP
@@ -186,11 +186,11 @@ and AP.Ticker = 'CB';
 
 select CASE
 WHEN Close > (
-					select Open + Open * 0.15
-					from AdjustedPrices AP
-					where AP.Ticker = 'CB'
-					and AP.Day = '2015-06-01'
-				 ) THEN 'Buy was correct'
+select Open + Open * 0.15
+from AdjustedPrices AP
+where AP.Ticker = 'CB'
+and AP.Day = '2015-06-01'
+) THEN 'Buy was correct'
 ELSE 'Buy was incorrect'
 END as Judgement
 from AdjustedPrices AP
@@ -201,19 +201,19 @@ and AP.Ticker = 'CB';
 
 select CASE
 WHEN Close < (
-					select Open + Open * 0.15
-					from AdjustedPrices AP
-					where AP.Ticker = 'CB'
-					and AP.Day = '2015-10-02'
-				 )
-				 AND
-				 Close > (
-							select Open - Open * 0.15
-							from AdjustedPrices AP
-							where AP.Ticker = 'CB'
-							and AP.Day = '2015-10-02'
-							)
-				THEN 'Hold was correct'
+select Open + Open * 0.15
+from AdjustedPrices AP
+where AP.Ticker = 'CB'
+and AP.Day = '2015-10-02'
+)
+AND
+Close > (
+select Open - Open * 0.15
+from AdjustedPrices AP
+where AP.Ticker = 'CB'
+and AP.Day = '2015-10-02'
+)
+THEN 'Hold was correct'
 ELSE 'Hold was incorrect'
 END as Judgement
 from AdjustedPrices AP
@@ -224,11 +224,11 @@ and AP.Ticker = 'CB';
 
 select CASE
 WHEN Close < (
-					select Open - Open * 0.15
-					from AdjustedPrices AP
-					where AP.Ticker = 'CB'
-					and AP.Day = '2016-01-04'
-				 ) THEN 'Sell was correct'
+select Open - Open * 0.15
+from AdjustedPrices AP
+where AP.Ticker = 'CB'
+and AP.Day = '2016-01-04'
+) THEN 'Sell was correct'
 ELSE 'Sell was incorrect'
 END as Judgement
 from AdjustedPrices AP
@@ -239,19 +239,19 @@ and AP.Ticker = 'CB';
 
 select CASE
 WHEN Close < (
-					select Open + Open * 0.15
-					from AdjustedPrices AP
-					where AP.Ticker = 'CB'
-					and AP.Day = '2015-05-02'
-				 )
-				 AND
-				 Close > (
-							select Open - Open * 0.15
-							from AdjustedPrices AP
-							where AP.Ticker = 'CB'
-							and AP.Day = '2015-05-02'
-							)
-				THEN 'Hold was correct'
+select Open + Open * 0.15
+from AdjustedPrices AP
+where AP.Ticker = 'CB'
+and AP.Day = '2015-05-02'
+)
+AND
+Close > (
+select Open - Open * 0.15
+from AdjustedPrices AP
+where AP.Ticker = 'CB'
+and AP.Day = '2015-05-02'
+)
+THEN 'Hold was correct'
 ELSE 'Hold was incorrect'
 END as Judgement
 from AdjustedPrices AP
@@ -262,19 +262,19 @@ and AP.Ticker = 'CB';
 
 select CASE
 WHEN Close < (
-					select Open + Open * 0.15
-					from AdjustedPrices AP
-					where AP.Ticker = 'CB'
-					and AP.Day = '2015-10-03'
-				 )
-				 AND
-				 Close > (
-							select Open - Open * 0.15
-							from AdjustedPrices AP
-							where AP.Ticker = 'CB'
-							and AP.Day = '2015-10-03'
-							)
-				THEN 'Hold was correct'
+select Open + Open * 0.15
+from AdjustedPrices AP
+where AP.Ticker = 'CB'
+and AP.Day = '2015-10-03'
+)
+AND
+Close > (
+select Open - Open * 0.15
+from AdjustedPrices AP
+where AP.Ticker = 'CB'
+and AP.Day = '2015-10-03'
+)
+THEN 'Hold was correct'
 ELSE 'Hold was incorrect'
 END as Judgement
 from AdjustedPrices AP
