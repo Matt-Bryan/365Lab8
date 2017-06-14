@@ -9,7 +9,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintWriter;
 import java.sql.*;
-import java.util.Scanner;
+import java.util.*;
 
 public class Driver {
 
@@ -1557,24 +1557,36 @@ public class Driver {
             e.printStackTrace();
         }
         
+        ArrayList<String> tickers = new ArrayList<String>();
+        tickers.add("FSLR");
+        tickers.add("XOM");
+        tickers.add("CB");
+        tickers.add("WAT");
+        int i;
+        for (i = 0; i < tickers.size(); i++) {
+        	if (tickers.get(i).equals(args[0])) {
+        		tickers.remove(args[0]);
+        	}
+        }
+        
         // Eighth Individual Query Part 1
         try {
             Statement s = conn.createStatement();
 
-            ResultSet result = s.executeQuery("select IF (AVG(Vals.CB) > AVG(Vals.FSLR), 'CB > FSLR', 'FSLR > CB') as Results "
-            		+ "from (select PricelineChanges.Month, PricelineChanges.AbsoluteChange as CB, SolarChanges.AbsoluteChange as FSLR, "
-            		+ "PricelineChanges.AbsoluteChange - SolarChanges.AbsoluteChange as CBvsFSLRPriceChange "
+            ResultSet result = s.executeQuery("select IF (AVG(Vals." + tickers.get(0) + ") > AVG(Vals." + args[0] + "), '" + tickers.get(0) + " > " + args[0] + "', '" + args[0] + " > " + tickers.get(0) + "') as Results "
+            		+ "from (select PricelineChanges.Month, PricelineChanges.AbsoluteChange as " + tickers.get(0) + ", SolarChanges.AbsoluteChange as " + args[0] + ", "
+            		+ "PricelineChanges.AbsoluteChange - SolarChanges.AbsoluteChange as " + tickers.get(0) + "vs" + args[0] + "PriceChange "
             		+ "from (select MONTHNAME(SolarMaxCloses.Day) as Month, SolarMaxCloses.Ticker, SolarMaxCloses.Close - SolarMinCloses.Close as AbsoluteChange "
             		+ "from (select AP.Ticker, MIN(AP.Day) as Min, AP.Close "
             		+ "from AdjustedPrices AP "
             		+ "where YEAR(AP.Day) = 2016 "
-            		+ "and AP.Ticker = 'FSLR' "
+            		+ "and AP.Ticker = '" + args[0] + "' "
             		+ "group by MONTH(AP.Day)) SolarMinCloses, "
             		+ "(select AP.Ticker, AP.Day, AP.Close "
             		+ "from (select AP.Ticker, MAX(AP.Day) as Max "
             		+ "from AdjustedPrices AP "
             		+ "where YEAR(AP.Day) = 2016 "
-            		+ "and AP.Ticker = 'FSLR' "
+            		+ "and AP.Ticker = '" + args[0] + "' "
             		+ "group by MONTH(AP.Day)) MaxDates, AdjustedPrices AP "
             		+ "where AP.Ticker = MaxDates.Ticker "
             		+ "and MaxDates.Max = AP.Day "
@@ -1586,13 +1598,13 @@ public class Driver {
             		+ "from (select AP.Ticker, MIN(AP.Day) as Min, AP.Close "
             		+ "from AdjustedPrices AP "
             		+ "where YEAR(AP.Day) = 2016 "
-            		+ "and AP.Ticker = 'CB' "
+            		+ "and AP.Ticker = '" + tickers.get(0) + "' "
             		+ "group by MONTH(AP.Day)) PricelineMinCloses, "
             		+ "(select AP.Ticker, AP.Day, AP.Close "
             		+ "from (select AP.Ticker, MAX(AP.Day) as Max "
             		+ "from AdjustedPrices AP "
             		+ "where YEAR(AP.Day) = 2016 "
-            		+ "and AP.Ticker = 'CB' "
+            		+ "and AP.Ticker = '" + tickers.get(0) + "' "
             		+ "group by MONTH(AP.Day)) MaxDates, AdjustedPrices AP "
             		+ "where AP.Ticker = MaxDates.Ticker "
             		+ "and MaxDates.Max = AP.Day "
@@ -1607,7 +1619,7 @@ public class Driver {
             output.println("Compare your stock with other stocks assigned to your team (CB, WAT, FSLR, XOM). "
             		+ "Determine which of the stocks is performing better throughout 2016. We decided that the better"
             		+ " performing stock was the one with the higher average absolute change over each month in 2016. If "
-            		+ "the stock output is greater than the other stock, it is the better performing stock of the two.");
+            		+ "the average absolute change over each month in 2016 is greater than the other stock, it is the better performing stock of the two.");
             output.println("</p>");
             
             output.println("<table>");
@@ -1633,20 +1645,20 @@ public class Driver {
         try {
             Statement s = conn.createStatement();
 
-            ResultSet result = s.executeQuery("select IF (AVG(Vals.WAT) > AVG(Vals.FSLR), 'WAT > FSLR', 'FSLR > WAT') as Results "
-            		+ "from (select PricelineChanges.Month, PricelineChanges.AbsoluteChange as WAT, SolarChanges.AbsoluteChange as FSLR, "
-            		+ "PricelineChanges.AbsoluteChange - SolarChanges.AbsoluteChange as WATvsFSLRPriceChange "
+            ResultSet result = s.executeQuery("select IF (AVG(Vals." + tickers.get(1) + ") > AVG(Vals." + args[0] + "), '" + tickers.get(1) + " > " + args[0] + "', '" + args[0] + " > " + tickers.get(1) + "') as Results "
+            		+ "from (select PricelineChanges.Month, PricelineChanges.AbsoluteChange as " + tickers.get(1) + ", SolarChanges.AbsoluteChange as " + args[0] + ", "
+            		+ "PricelineChanges.AbsoluteChange - SolarChanges.AbsoluteChange as " + tickers.get(1) + "vs" + args[0] + "PriceChange "
             		+ "from (select MONTHNAME(SolarMaxCloses.Day) as Month, SolarMaxCloses.Ticker, SolarMaxCloses.Close - SolarMinCloses.Close as AbsoluteChange "
             		+ "from (select AP.Ticker, MIN(AP.Day) as Min, AP.Close "
             		+ "from AdjustedPrices AP "
             		+ "where YEAR(AP.Day) = 2016 "
-            		+ "and AP.Ticker = 'FSLR' "
+            		+ "and AP.Ticker = '" + args[0] + "' "
             		+ "group by MONTH(AP.Day)) SolarMinCloses, "
             		+ "(select AP.Ticker, AP.Day, AP.Close "
             		+ "from (select AP.Ticker, MAX(AP.Day) as Max "
             		+ "from AdjustedPrices AP "
             		+ "where YEAR(AP.Day) = 2016 "
-            		+ "and AP.Ticker = 'FSLR' "
+            		+ "and AP.Ticker = '" + args[0] + "' "
             		+ "group by MONTH(AP.Day)) MaxDates, AdjustedPrices AP "
             		+ "where AP.Ticker = MaxDates.Ticker "
             		+ "and MaxDates.Max = AP.Day "
@@ -1658,13 +1670,13 @@ public class Driver {
             		+ "from (select AP.Ticker, MIN(AP.Day) as Min, AP.Close "
             		+ "from AdjustedPrices AP "
             		+ "where YEAR(AP.Day) = 2016 "
-            		+ "and AP.Ticker = 'WAT' "
+            		+ "and AP.Ticker = '" + tickers.get(1) + "' "
             		+ "group by MONTH(AP.Day)) PricelineMinCloses, "
             		+ "(select AP.Ticker, AP.Day, AP.Close "
             		+ "from (select AP.Ticker, MAX(AP.Day) as Max "
             		+ "from AdjustedPrices AP "
             		+ "where YEAR(AP.Day) = 2016 "
-            		+ "and AP.Ticker = 'WAT' "
+            		+ "and AP.Ticker = '" + tickers.get(1) + "' "
             		+ "group by MONTH(AP.Day)) MaxDates, AdjustedPrices AP "
             		+ "where AP.Ticker = MaxDates.Ticker "
             		+ "and MaxDates.Max = AP.Day "
@@ -1697,20 +1709,20 @@ public class Driver {
         try {
             Statement s = conn.createStatement();
 
-            ResultSet result = s.executeQuery("select IF (AVG(Vals.XOM) > AVG(Vals.FSLR), 'XOM > FSLR', 'FSLR > XOM') as Results "
-            		+ "from (select PricelineChanges.Month, PricelineChanges.AbsoluteChange as XOM, SolarChanges.AbsoluteChange as FSLR, "
-            		+ "PricelineChanges.AbsoluteChange - SolarChanges.AbsoluteChange as XOMvsFSLRPriceChange "
+            ResultSet result = s.executeQuery("select IF (AVG(Vals." + tickers.get(2) + ") > AVG(Vals." + args[0] + "), '" + tickers.get(2) + " > " + args[0] + "', '" + args[0] + " > " + tickers.get(2) + "') as Results "
+            		+ "from (select PricelineChanges.Month, PricelineChanges.AbsoluteChange as " + tickers.get(2) + ", SolarChanges.AbsoluteChange as " + args[0] + ", "
+            		+ "PricelineChanges.AbsoluteChange - SolarChanges.AbsoluteChange as " + tickers.get(2) + "vs" + args[0] + "PriceChange "
             		+ "from (select MONTHNAME(SolarMaxCloses.Day) as Month, SolarMaxCloses.Ticker, SolarMaxCloses.Close - SolarMinCloses.Close as AbsoluteChange "
             		+ "from (select AP.Ticker, MIN(AP.Day) as Min, AP.Close "
             		+ "from AdjustedPrices AP "
             		+ "where YEAR(AP.Day) = 2016 "
-            		+ "and AP.Ticker = 'FSLR' "
+            		+ "and AP.Ticker = '" + args[0] + "' "
             		+ "group by MONTH(AP.Day)) SolarMinCloses, "
             		+ "(select AP.Ticker, AP.Day, AP.Close "
             		+ "from (select AP.Ticker, MAX(AP.Day) as Max "
             		+ "from AdjustedPrices AP "
             		+ "where YEAR(AP.Day) = 2016 "
-            		+ "and AP.Ticker = 'FSLR' "
+            		+ "and AP.Ticker = '" + args[0] + "' "
             		+ "group by MONTH(AP.Day)) MaxDates, AdjustedPrices AP "
             		+ "where AP.Ticker = MaxDates.Ticker "
             		+ "and MaxDates.Max = AP.Day "
@@ -1722,13 +1734,13 @@ public class Driver {
             		+ "from (select AP.Ticker, MIN(AP.Day) as Min, AP.Close "
             		+ "from AdjustedPrices AP "
             		+ "where YEAR(AP.Day) = 2016 "
-            		+ "and AP.Ticker = 'XOM' "
+            		+ "and AP.Ticker = '" + tickers.get(2) + "' "
             		+ "group by MONTH(AP.Day)) PricelineMinCloses, "
             		+ "(select AP.Ticker, AP.Day, AP.Close "
             		+ "from (select AP.Ticker, MAX(AP.Day) as Max "
             		+ "from AdjustedPrices AP "
             		+ "where YEAR(AP.Day) = 2016 "
-            		+ "and AP.Ticker = 'XOM' "
+            		+ "and AP.Ticker = '" + tickers.get(2) + "' "
             		+ "group by MONTH(AP.Day)) MaxDates, AdjustedPrices AP "
             		+ "where AP.Ticker = MaxDates.Ticker "
             		+ "and MaxDates.Max = AP.Day "
